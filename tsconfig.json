@@ -9,12 +9,10 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "skipLibCheck": true,
     "declaration": true,
-    "sourceMap": true,
-    "typeRoots" : [
-      "../node_modules/@types"
-      ]
+    "sourceMap": true
   }
 ,
-"exclude": ["test", "dist"]
+"exclude": [ "dist"]
 }

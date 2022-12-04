@@ -1869,7 +1869,7 @@ describe("Mock", () => {
                 getValue() {
                     return this.n;
                 },
-                setValue(n) {
+                setValue(n: any) {
                     this.n = n;
                 },
                 increment() {

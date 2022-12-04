@@ -1,5 +1,4 @@
-﻿///<reference path="../../node_modules/typescript/lib/lib.es6.d.ts"/>
-import * as TypeMoq from "typemoq";
+﻿import * as TypeMoq from "typemoq";
 
 import { TypeMoqTests, GlobalBar, IGlobalBar, someGlobalFunc, someGlobalFuncWithArgs } from "./fixtures";
 import { Utils } from "./Utils";
