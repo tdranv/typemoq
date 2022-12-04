@@ -112,7 +112,7 @@ gulp.task('dts-bundle:src', function () {
 		});
 });
 
-gulp.task('copy-dts-bundle:src', ['dts-bundle:src'], function () {
+gulp.task('copy-dts-bundle:src', gulp.series('dts-bundle:src'), function () {
 	return gulp.src([srcOpts.outDefPath + '/typemoq-dts-bundle.d.ts'])
 		.pipe($.replace('typemoq-dts-bundle', 'typemoq'))
 		.pipe($.rename('typemoq.d.ts'))
@@ -232,8 +232,8 @@ gulp.task('test:mocha.es6', function () {
 
 function runMocha(srcPath) {
 	return gulp.src(srcPath)
-		.pipe($.spawnMocha({ 
-			ui: 'bdd', 
+		.pipe($.spawnMocha({
+			ui: 'bdd',
 			reporter: 'spec',
 			env: {'NODE_PATH': './.tmp/src'}
 		}))
@@ -249,7 +249,7 @@ gulp.task('2dist', function () {
 		.pipe($.size());
 });
 
-gulp.task('minify', ['2dist'], function () {
+gulp.task('minify', gulp.series('2dist'), function () {
 	return gulp.src(srcOpts.outJsBundleFullPath())
 		.pipe($.uglify())
 		.pipe($.rename('typemoq-min.js'))
@@ -276,18 +276,18 @@ gulp.task('clean', function (cb) {
 	del([tempDir, distDir], cb);
 });
 
-gulp.task('build', ['clean'], function (cb) {
+gulp.task('build', gulp.series('clean'), function (cb) {
 	runSequence('scripts:src', 'scripts:test', 'scripts:test.es6', 'minify', cb);
 });
 
-gulp.task('default', ['build'], function (cb) {
+gulp.task('default', gulp.series('build'), function (cb) {
 	runSequence('test:karma', 'test:mocha', 'test:mocha.es6', cb);
 });
 
-gulp.task('release', ['default'], function (cb) {
+gulp.task('release', gulp.series('default'), function (cb) {
 	runSequence('changelog', cb);
 });
 
-gulp.task('test:travis', ['build'], function (cb) {
+gulp.task('test:travis', gulp.series('build'), function (cb) {
 	runSequence('test:sauce', 'test:mocha', 'test:mocha.es6', cb);
 });

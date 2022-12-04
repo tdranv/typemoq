@@ -28,7 +28,7 @@ export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> impleme
         return result;
     }
 
-    static ofDynamicMock<U, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
+    static ofDynamicMock<U extends object, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
         let interceptor = new InterceptorSetup<U>();
         let proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
         let result = new MethodCallReturn(mock, setupExpression, interceptor, proxy);

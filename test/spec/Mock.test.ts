@@ -1,5 +1,4 @@
-﻿///<reference path="../../.tmp/src/typemoq.d.ts"/>
-import * as TypeMoq from "typemoq";
+﻿import * as TypeMoq from "typemoq";
 
 import * as _ from "lodash";
 

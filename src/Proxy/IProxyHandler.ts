@@ -1,6 +1,6 @@
 import * as common from "../Common/_all";
 
-export declare type PropKey = string | number | symbol;
+export declare type PropKey = string |  symbol;
 
 export interface IProxyHandler<T> {
     getPrototypeOf? (target: T): Object | null;

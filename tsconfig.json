@@ -1,8 +1,10 @@
 ﻿{
   "compileOnSave": false,
   "compilerOptions": {
+    "outDir": "dist",
     "target": "es5",
     "module": "es2015",
+    "lib": ["ES2015", "DOM"],
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
     "removeComments": true,
@@ -13,4 +15,6 @@
       "../node_modules/@types"
       ]
   }
+,
+"exclude": ["test", "dist"]
 }

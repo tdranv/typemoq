@@ -21,7 +21,7 @@ export class GlobalMockApi {
         return new GMock(mock, undefined, GlobalType.Class, container);
     }
 
-    static ofType2<U>(globalName: string, container: Object = window, behavior = MockBehavior.Loose): IGlobalMock<U> {
+    static ofType2<U extends object>(globalName: string, container: Object = window, behavior = MockBehavior.Loose): IGlobalMock<U> {
         const mock: IMock<U> = DynamicMock.ofType<U>(globalName, behavior, false);
         return new GMock(mock, undefined, GlobalType.Class, container);
     }

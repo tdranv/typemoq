@@ -5,7 +5,7 @@ import { InterceptorExecute } from "./InterceptorExecute";
 import { MethodCall } from "./MethodCall";
 import { MethodCallReturn } from "./MethodCallReturn";
 
-export class DynamicMock<T> extends MockBase<T> {
+export class DynamicMock<T extends object> extends MockBase<T> {
 
     private constructor(
         target: T,
@@ -22,7 +22,7 @@ export class DynamicMock<T> extends MockBase<T> {
         this._proxy = all.ProxyFactory.createProxyES6<T>(target, this._interceptor);
     }
 
-    static ofType<U>(name: string, behavior: all.MockBehavior, shouldOverrideTarget: boolean): all.IMock<U> {
+    static ofType<U extends object>(name: string, behavior: all.MockBehavior, shouldOverrideTarget: boolean): all.IMock<U> {
         const mock: DynamicMock<U> = new DynamicMock<U>(<any>(() => { }), name, shouldOverrideTarget, behavior);
         return mock;
     }
