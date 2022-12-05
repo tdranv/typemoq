@@ -1,4 +1,4 @@
-﻿import * as TypeMoq from "typemoq";
+﻿import * as TypeMoq from "../typemoq";
 
 import * as _ from "lodash";
 
@@ -10,8 +10,6 @@ const It = TypeMoq.It;
 const Times = TypeMoq.Times;
 const ExpectedCallType = TypeMoq.ExpectedCallType;
 const MockException = TypeMoq.MockException;
-
-import { expect } from "chai";
 
 const hasProxyES6 = (typeof Proxy != "undefined");
 const noProxyES6Msg = "global 'Proxy' object not available";
@@ -26,21 +24,21 @@ describe("Mock", () => {
 
             const mock: TypeMoq.IMock<TypeMoqTests.Bar> = Mock.ofType(TypeMoqTests.Bar);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance using class as ctor parameter and allow interface cast", () => {
 
             const mock: TypeMoq.IMock<TypeMoqTests.IBar> = Mock.ofType(TypeMoqTests.Bar);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance using interface as type variable and class as ctor parameter", () => {
 
             const mock: TypeMoq.IMock<TypeMoqTests.IBar> = Mock.ofType<TypeMoqTests.IBar>(TypeMoqTests.Bar);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance using class as ctor parameter and ctor args", () => {
@@ -48,17 +46,17 @@ describe("Mock", () => {
             const bar = new TypeMoqTests.Bar();
             const mock: TypeMoq.IMock<TypeMoqTests.Foo> = Mock.ofType(TypeMoqTests.Foo, MockBehavior.Loose, undefined, bar);
 
-            expect(mock.object).to.be.not.null;
-            expect(mock.object.bar).to.be.not.null;
+            expect(mock.object).not.toBeNull();
+            expect(mock.object.bar).not.toBeNull();
         });
 
         it("should create an instance using a generic class as ctor parameter and ctor args", () => {
 
             const mock = <TypeMoq.IMock<TypeMoqTests.GenericFoo<TypeMoqTests.Bar>>>Mock.ofType(TypeMoqTests.GenericFoo, MockBehavior.Loose, undefined, TypeMoqTests.Bar, 999);
 
-            expect(mock.object).to.be.not.null;
-            expect(mock.object.bar).to.be.not.null;
-            expect(mock.object.numberValue).to.be.not.null;
+            expect(mock.object).not.toBeNull();
+            expect(mock.object.bar).not.toBeNull();
+            expect(mock.object.numberValue).not.toBeNull();
         });
 
         it("should create an instance from an existing object", () => {
@@ -67,7 +65,7 @@ describe("Mock", () => {
 
             const mock: TypeMoq.IMock<TypeMoqTests.Bar> = Mock.ofInstance(bar);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance from a function object", () => {
@@ -75,8 +73,8 @@ describe("Mock", () => {
             const mock1: TypeMoq.IMock<() => string> = Mock.ofInstance(TypeMoqTests.someFunc);
             const mock2: TypeMoq.IMock<(a: any, b: any, c: any) => string> = Mock.ofInstance(TypeMoqTests.someFuncWithArgs);
 
-            expect(mock1.object).to.be.not.null;
-            expect(mock2.object).to.be.not.null;
+            expect(mock1.object).not.toBeNull();
+            expect(mock2.object).not.toBeNull();
         });
 
         describe("dynamic mock", () => {
@@ -89,11 +87,11 @@ describe("Mock", () => {
                 else {
                     const mock: TypeMoq.IMock<TypeMoqTests.IThing> = Mock.ofType<TypeMoqTests.IThing>();
 
-                    expect(mock.object).to.be.not.null;
-                    expect(mock.object.getA("abc")).to.be.undefined;
-                    expect(mock.object.getB(123)).to.be.undefined;
-                    expect(mock.object.getC()).to.be.undefined;
-                    expect(mock.object.valueA).to.be.a("function");
+                    expect(mock.object).not.toBeNull();
+                    expect(mock.object.getA("abc")).toBeUndefined();
+                    expect(mock.object.getB(123)).toBeUndefined();
+                    expect(mock.object.getC()).toBeUndefined();
+                    expect(typeof mock.object.valueA).toEqual("function");
                 }
 
             });
@@ -106,8 +104,8 @@ describe("Mock", () => {
                 else {
                     const mock: TypeMoq.IMock<TypeMoqTests.Greeter> = Mock.ofType<TypeMoqTests.Greeter>();
 
-                    expect(mock.object).to.be.not.null;
-                    expect(mock.object.greet()).to.be.undefined;
+                    expect(mock.object).not.toBeNull();
+                    expect(mock.object.greet()).toBeUndefined();
                 }
 
             });
@@ -120,8 +118,8 @@ describe("Mock", () => {
                 else {
                     const mock: TypeMoq.IMock<typeof TypeMoqTests.Greeter> = Mock.ofType<typeof TypeMoqTests.Greeter>();
 
-                    expect(mock.object).to.be.not.null;
-                    expect(mock.object.instance()).to.be.undefined;
+                    expect(mock.object).not.toBeNull();
+                    expect(mock.object.instance()).toBeUndefined();
                 }
 
             });
@@ -134,7 +132,7 @@ describe("Mock", () => {
                 else {
                     const mock = Mock.ofType<Function>();
 
-                    expect(mock.object).to.be.not.null;
+                    expect(mock.object).not.toBeNull();
                 }
 
             });
@@ -152,8 +150,8 @@ describe("Mock", () => {
             const bar: TypeMoqTests.Bar = mock.object;
             const bar2: TypeMoqTests.IBar = mock.object;
 
-            expect(bar).to.be.not.null;
-            expect(bar).to.eq(bar2);
+            expect(bar).not.toBeNull();
+            expect(bar).toEqual(bar2);
         });
 
         it("should expose interface passed in as type variable to ctor", () => {
@@ -163,8 +161,8 @@ describe("Mock", () => {
             const bar: TypeMoqTests.IBar = mock.object;
             const bar2: TypeMoqTests.Bar = mock.object;
 
-            expect(bar).to.be.not.null;
-            expect(bar).to.eq(bar2);
+            expect(bar).not.toBeNull();
+            expect(bar).toEqual(bar2);
         });
 
         it("should expose type of object passed in as variable to ctor", () => {
@@ -174,7 +172,7 @@ describe("Mock", () => {
 
             const bar2: TypeMoqTests.Bar = mock.object;
 
-            expect(bar2).to.be.not.null;
+            expect(bar2).not.toBeNull();
         });
 
         it("should expose type of function passed in as variable to ctor", () => {
@@ -184,8 +182,8 @@ describe("Mock", () => {
             const func1: () => string = mock1.object;
             const func2: (a: any, b: any, c: any) => string = mock2.object;
 
-            expect(func1).to.be.not.null;
-            expect(func2).to.be.not.null;
+            expect(func1).not.toBeNull();
+            expect(func2).not.toBeNull();
         });
 
         describe("dynamic mock", () => {
@@ -201,8 +199,8 @@ describe("Mock", () => {
                     const bar: TypeMoqTests.Bar = mock.object;
                     const bar2: TypeMoqTests.IBar = mock.object;
 
-                    expect(bar).to.be.not.null;
-                    expect(bar).to.eq(bar2);
+                    expect(bar).not.toBeNull();
+                    expect(bar).toEqual(bar2);
                 }
 
             });
@@ -218,8 +216,8 @@ describe("Mock", () => {
                     const bar: TypeMoqTests.IBar = mock.object;
                     const bar2: TypeMoqTests.Bar = mock.object;
 
-                    expect(bar).to.be.not.null;
-                    expect(bar).to.eq(bar2);
+                    expect(bar).not.toBeNull();
+                    expect(bar).toEqual(bar2);
                 }
 
             });
@@ -239,7 +237,7 @@ describe("Mock", () => {
                     let count = 0;
                     for (let prop in mock.object)
                         count++;
-                    expect(count).eq(2);
+                    expect(count).toEqual(2);
                 }
 
             });
@@ -257,8 +255,8 @@ describe("Mock", () => {
             const bar: TypeMoqTests.Bar = mock.target;
             const bar2: TypeMoqTests.IBar = mock.target;
 
-            expect(bar).to.be.not.null;
-            expect(bar).to.eq(bar2);
+            expect(bar).not.toBeNull();
+            expect(bar).toEqual(bar2);
         });
 
         it("should expose interface passed in as type variable to ctor", () => {
@@ -268,8 +266,8 @@ describe("Mock", () => {
             const bar: TypeMoqTests.IBar = mock.target;
             const bar2: TypeMoqTests.Bar = mock.target;
 
-            expect(bar).to.be.not.null;
-            expect(bar).to.eq(bar2);
+            expect(bar).not.toBeNull();
+            expect(bar).toEqual(bar2);
         });
 
         it("should expose type of object passed in as variable to ctor", () => {
@@ -279,7 +277,7 @@ describe("Mock", () => {
 
             const bar2: TypeMoqTests.Bar = mock.target;
 
-            expect(bar2).to.be.not.null;
+            expect(bar2).not.toBeNull();
         });
 
         it("should expose type of function passed in as variable to ctor", () => {
@@ -289,8 +287,8 @@ describe("Mock", () => {
             const func1: () => string = mock1.target;
             const func2: (a: any, b: any, c: any) => string = mock2.target;
 
-            expect(func1).to.be.not.null;
-            expect(func2).to.be.not.null;
+            expect(func1).not.toBeNull();
+            expect(func2).not.toBeNull();
         });
 
         describe("dynamic mock", () => {
@@ -306,8 +304,8 @@ describe("Mock", () => {
                     const bar: TypeMoqTests.Bar = mock.target;
                     const bar2: TypeMoqTests.IBar = mock.target;
 
-                    expect(bar).to.be.not.null;
-                    expect(bar).to.eq(bar2);
+                    expect(bar).not.toBeNull();
+                    expect(bar).toEqual(bar2);
                 }
 
             });
@@ -323,8 +321,8 @@ describe("Mock", () => {
                     const bar: TypeMoqTests.IBar = mock.target;
                     const bar2: TypeMoqTests.Bar = mock.target;
 
-                    expect(bar).to.be.not.null;
-                    expect(bar).to.eq(bar2);
+                    expect(bar).not.toBeNull();
+                    expect(bar).toEqual(bar2);
                 }
 
             });
@@ -344,7 +342,7 @@ describe("Mock", () => {
                     let count = 0;
                     for (let prop in mock.target)
                         count++;
-                    expect(count).eq(2);
+                    expect(count).toEqual(2);
                 }
 
             });
@@ -359,7 +357,7 @@ describe("Mock", () => {
 
             const mock = Mock.ofType(TypeMoqTests.Doer);
 
-            expect(mock.object.doNumber(999)).to.eq(undefined);
+            expect(mock.object.doNumber(999)).toEqual(undefined);
         });
 
         it("should return setup value when setup found and behavior is strict", () => {
@@ -368,23 +366,23 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber(123)).returns(() => 999);
 
-            expect(mock.object.doNumber(123)).to.eq(999);
-            expect(() => mock.object.doNumber(999)).to.throw(MockException);
-            expect(() => mock.object.doNumber()).to.throw(MockException);
+            expect(mock.object.doNumber(123)).toEqual(999);
+            expect(() => mock.object.doNumber(999)).toThrow(MockException);
+            expect(() => mock.object.doNumber()).toThrow(MockException);
         });
 
         it("should throw when no setup found and behavior is strict", () => {
 
             const mock = Mock.ofType(TypeMoqTests.Doer, MockBehavior.Strict);
 
-            expect(() => mock.object.doNumber(999)).to.throw(MockException);
+            expect(() => mock.object.doNumber(999)).toThrow(MockException);
         });
 
         it("should throw an exception derived from Error when no setup found and behavior is strict", () => {
 
             const mock = Mock.ofType(TypeMoqTests.Doer, MockBehavior.Strict);
 
-            expect(() => mock.object.doNumber(999)).to.throw(Error);
+            expect(() => mock.object.doNumber(999)).toThrow(Error);
         });
 
         it("should support verify never when behavior is strict", () => {
@@ -405,7 +403,7 @@ describe("Mock", () => {
                 else {
                     const mock = Mock.ofType<TypeMoqTests.IDo>();
 
-                    expect(mock.object.doNumber(999)).to.eq(undefined);
+                    expect(mock.object.doNumber(999)).toEqual(undefined);
                 }
 
             });
@@ -420,9 +418,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber(123)).returns(() => 999);
 
-                    expect(mock.object.doNumber(123)).to.eq(999);
-                    expect(() => mock.object.doNumber(999)).to.throw(MockException);
-                    expect(() => mock.object.doNumber()).to.throw(MockException);
+                    expect(mock.object.doNumber(123)).toEqual(999);
+                    expect(() => mock.object.doNumber(999)).toThrow(MockException);
+                    expect(() => mock.object.doNumber()).toThrow(MockException);
                 }
 
             });
@@ -435,7 +433,7 @@ describe("Mock", () => {
                 else {
                     const mock = Mock.ofType<TypeMoqTests.IDo>(undefined, MockBehavior.Strict);
 
-                    expect(() => mock.object.doNumber(999)).to.throw(MockException);
+                    expect(() => mock.object.doNumber(999)).toThrow(MockException);
                 }
 
             });
@@ -448,7 +446,7 @@ describe("Mock", () => {
                 else {
                     const mock = Mock.ofType<TypeMoqTests.IDo>(undefined, MockBehavior.Strict);
 
-                    expect(() => mock.object.doNumber(999)).to.throw(Error);
+                    expect(() => mock.object.doNumber(999)).toThrow(Error);
                 }
 
             });
@@ -464,7 +462,7 @@ describe("Mock", () => {
 
             mock.setup(x => x()).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object()).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object()).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
         });
 
         it("should match a function with args", () => {
@@ -473,7 +471,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isAny(), It.isAny(), It.isAny())).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object(1, 2, 3)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object(1, 2, 3)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
         });
 
         it('should match a function with explicit number value params', () => {
@@ -482,7 +480,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isValue(1))).returns(() => 123);
 
-            expect(mock.object(1)).to.eq(123);
+            expect(mock.object(1)).toEqual(123);
         });
 
         it('should match a function with implicit number value params', () => {
@@ -491,7 +489,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(1)).returns(() => 123);
 
-            expect(mock.object(1)).to.eq(123);
+            expect(mock.object(1)).toEqual(123);
         });
 
         it('should match a function with explicit string value params', () => {
@@ -500,7 +498,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isValue("abc"))).returns(() => 123);
 
-            expect(mock.object("abc")).to.eq(123);
+            expect(mock.object("abc")).toEqual(123);
         });
 
         it('should match a function with implicit string value params', () => {
@@ -509,7 +507,7 @@ describe("Mock", () => {
 
             mock.setup(x => x("abc")).returns(() => 123);
 
-            expect(mock.object("abc")).to.eq(123);
+            expect(mock.object("abc")).toEqual(123);
         });
 
         it('should match a function with partial object value params', () => {
@@ -519,7 +517,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isObjectWith({ baz: 'hello' }))).returns(() => 123);
 
-            expect(mock.object(anObject)).to.eq(123);
+            expect(mock.object(anObject)).toEqual(123);
         });
 
         it('should match a function with explicit object value params', () => {
@@ -529,7 +527,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isValue(anObject))).returns(() => 123);
 
-            expect(mock.object(anObject)).to.eq(123);
+            expect(mock.object(anObject)).toEqual(123);
         });
 
         it('should match a function with implicit object value params', () => {
@@ -539,14 +537,14 @@ describe("Mock", () => {
 
             mock.setup(x => x(anObject)).returns(() => 123);
 
-            expect(mock.object(anObject)).to.eq(123);
+            expect(mock.object(anObject)).toEqual(123);
         });
 
         it("should throw if more than one method is matched", () => {
 
             const mock = Mock.ofType(TypeMoqTests.Doer);
 
-            expect(() => mock.setup(x => { x.doVoid(); x.doNumber(); })).to.throw(MockException);
+            expect(() => mock.setup(x => { x.doVoid(); x.doNumber(); })).toThrow(MockException);
         });
 
         it("should match a no args method", () => {
@@ -555,7 +553,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber()).returns(() => 999);
 
-            expect(mock.object.doNumber()).to.eq(999);
+            expect(mock.object.doNumber()).toEqual(999);
         });
 
         it("should match a method with explicit number value params", () => {
@@ -564,9 +562,9 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber(It.isValue(321))).returns(() => 999);
 
-            expect(mock.object.doNumber(321)).to.eq(999);
-            expect(mock.object.doNumber(322)).to.eq(undefined);
-            expect(mock.object.doNumber()).to.eq(undefined);
+            expect(mock.object.doNumber(321)).toEqual(999);
+            expect(mock.object.doNumber(322)).toEqual(undefined);
+            expect(mock.object.doNumber()).toEqual(undefined);
         });
 
         it("should match a method with implicit number value params", () => {
@@ -575,9 +573,9 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber(321)).returns(() => 999);
 
-            expect(mock.object.doNumber(321)).to.eq(999);
-            expect(mock.object.doNumber(322)).to.eq(undefined);
-            expect(mock.object.doNumber()).to.eq(undefined);
+            expect(mock.object.doNumber(321)).toEqual(999);
+            expect(mock.object.doNumber(322)).toEqual(undefined);
+            expect(mock.object.doNumber()).toEqual(undefined);
         });
 
         it("should match a method with explicit string value params", () => {
@@ -586,9 +584,9 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isValue("abc"))).returns((s: string) => s.toUpperCase());
 
-            expect(mock.object.doString("abc")).to.eq("ABC");
-            expect(mock.object.doString("cba")).to.eq(undefined);
-            expect(mock.object.doString()).to.eq(undefined);
+            expect(mock.object.doString("abc")).toEqual("ABC");
+            expect(mock.object.doString("cba")).toEqual(undefined);
+            expect(mock.object.doString()).toEqual(undefined);
         });
 
         it("should match a method with implicit string value params", () => {
@@ -597,9 +595,9 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString("abc")).returns((s: string) => s.toUpperCase());
 
-            expect(mock.object.doString("abc")).to.eq("ABC");
-            expect(mock.object.doString("cba")).to.eq(undefined);
-            expect(mock.object.doString()).to.eq(undefined);
+            expect(mock.object.doString("abc")).toEqual("ABC");
+            expect(mock.object.doString("cba")).toEqual(undefined);
+            expect(mock.object.doString()).toEqual(undefined);
         });
 
         it("should match a method with partial object value params", () => {
@@ -616,16 +614,16 @@ describe("Mock", () => {
 
             mock.setup(x => x.doObject(It.isObjectWith(match))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-            expect(mock.object.doObject(bar2)).to.eq(undefined);
+            expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual(undefined);
 
             bar2.anyValue = 42;
             bar2.enumValue = TypeMoqTests.AnEnum.One;
-            expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(new Object())).to.eq(undefined);
-            expect(mock.object.doObject({ foo: 'nothing' })).to.eq(undefined);
-            expect(mock.object.doObject()).to.eq(undefined);
+            expect(mock.object.doObject(new Object())).toEqual(undefined);
+            expect(mock.object.doObject({ foo: 'nothing' })).toEqual(undefined);
+            expect(mock.object.doObject()).toEqual(undefined);
         });
 
         it("should match a method with explicit object value params", () => {
@@ -638,14 +636,14 @@ describe("Mock", () => {
 
             mock.setup(x => x.doObject(It.isValue(bar1))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-            expect(mock.object.doObject(bar2)).to.eq(undefined);
+            expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual(undefined);
 
             bar2.value = "Lorem ipsum dolor sit amet";
-            expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(new Object())).to.eq(undefined);
-            expect(mock.object.doObject()).to.eq(undefined);
+            expect(mock.object.doObject(new Object())).toEqual(undefined);
+            expect(mock.object.doObject()).toEqual(undefined);
         });
 
         it("should match a method with implicit object value params", () => {
@@ -658,14 +656,14 @@ describe("Mock", () => {
 
             mock.setup(x => x.doObject(bar1)).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-            expect(mock.object.doObject(bar2)).to.eq(undefined);
+            expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual(undefined);
 
             bar2.value = "Lorem ipsum dolor sit amet";
-            expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(new Object())).to.eq(undefined);
-            expect(mock.object.doObject()).to.eq(undefined);
+            expect(mock.object.doObject(new Object())).toEqual(undefined);
+            expect(mock.object.doObject()).toEqual(undefined);
         });
 
         it("should match a method with any object type params", () => {
@@ -678,11 +676,11 @@ describe("Mock", () => {
 
             mock.setup(x => x.doObject(It.isAnyObject(TypeMoqTests.Bar))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-            expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.doObject(new Object())).to.eq(undefined);
-            expect(mock.object.doObject()).to.eq(undefined);
+            expect(mock.object.doObject(new Object())).toEqual(undefined);
+            expect(mock.object.doObject()).toEqual(undefined);
         });
 
         it("should match a method with any string params", () => {
@@ -691,7 +689,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
         });
 
         it("should match a method with any number params", () => {
@@ -700,7 +698,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber(It.isAnyNumber())).returns(() => 999);
 
-            expect(mock.object.doNumber(123)).to.eq(999);
+            expect(mock.object.doNumber(123)).toEqual(999);
         });
 
         it("should match a method with any interface/class params", () => {
@@ -711,7 +709,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doBar(It.isAnyObject(TypeMoqTests.Bar))).returns(() => bar2);
 
-            expect(mock.object.doBar(bar1)).to.eq(bar2);
+            expect(mock.object.doBar(bar1)).toEqual(bar2);
         });
 
         it("should match a method param by a predicate", () => {
@@ -723,9 +721,9 @@ describe("Mock", () => {
 
             mock.setup(x => x.doBar(It.is((x: TypeMoqTests.Bar) => x.value === "Ut enim ad minim veniam"))).returns(() => bar2);
 
-            expect(mock.object.doBar(bar1)).to.eq(bar2);
+            expect(mock.object.doBar(bar1)).toEqual(bar2);
 
-            expect(mock.object.doBar(bar2)).to.eq(undefined);
+            expect(mock.object.doBar(bar2)).toEqual(undefined);
         });
 
         it("should match a property getter", () => {
@@ -734,7 +732,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.foo).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock.object.foo).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock.object.foo).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
         });
 
         it("should prefer oldest setup when multiple methods are setup", () => {
@@ -748,7 +746,7 @@ describe("Mock", () => {
 
             const user = new TypeMoqTests.DoerUser(mock.object);
 
-            expect(user.execute("abc", 123)).to.eq("123");
+            expect(user.execute("abc", 123)).toEqual("123");
         });
 
         it("should replay from oldest to newest record", () => {
@@ -759,10 +757,10 @@ describe("Mock", () => {
             mock.setup(x => x()).returns(() => 1);
             mock.setup(x => x()).returns(() => 2);
 
-            expect(mock.object()).to.eq(0);
-            expect(mock.object()).to.eq(1);
-            expect(mock.object()).to.eq(2);
-            expect(() => mock.object()).to.throw(MockException);
+            expect(mock.object()).toEqual(0);
+            expect(mock.object()).toEqual(1);
+            expect(mock.object()).toEqual(2);
+            expect(() => mock.object()).toThrow(MockException);
         });
 
         it("should replay indefinitely when only a single record exists", () => {
@@ -771,9 +769,9 @@ describe("Mock", () => {
 
             mock.setup(x => x()).returns(() => 0);
 
-            expect(mock.object()).to.eq(0);
-            expect(mock.object()).to.eq(0);
-            expect(mock.object()).to.eq(0);
+            expect(mock.object()).toEqual(0);
+            expect(mock.object()).toEqual(0);
+            expect(mock.object()).toEqual(0);
         });
 
         it("should allow partial setup while keeping intact the target object", () => {
@@ -786,16 +784,16 @@ describe("Mock", () => {
 
             mock.callBase = true;
 
-            expect(mock.object.a()).equal(1);
-            expect(mock.object.b()).equal(1);
+            expect(mock.object.a()).toEqual(1);
+            expect(mock.object.b()).toEqual(1);
 
             mock.setup(x => x.a()).returns(() => 2);
 
-            expect(target.a()).equal(1);
-            expect(target.b()).equal(1);
+            expect(target.a()).toEqual(1);
+            expect(target.b()).toEqual(1);
 
-            expect(mock.object.a()).equal(2);
-            expect(mock.object.b()).equal(2);
+            expect(mock.object.a()).toEqual(2);
+            expect(mock.object.b()).toEqual(2);
         });
 
         it("should return a Promise resolved with the mocked object", done => {
@@ -805,7 +803,7 @@ describe("Mock", () => {
 
                 Promise.resolve(mock.object)
                     .then(x => {
-                        expect(x).eql(mock.object);
+                        expect(x).toEqual(mock.object);
                         done();
                     });
             }
@@ -825,17 +823,17 @@ describe("Mock", () => {
 
                     mock.setup(x => x.anyValue).returns(() => null);
 
-                    expect(mock.object.anyValue).to.be.null;
+                    expect(mock.object.anyValue).toBeNull();
 
                     mock.reset();
                     mock.setup(x => x.anyValue).returns(() => 0);
 
-                    expect(mock.object.anyValue).to.eq(0);
+                    expect(mock.object.anyValue).toEqual(0);
 
                     mock.reset();
                     mock.setup(x => x.anyValue).returns(() => undefined);
 
-                    expect(mock.object.anyValue).to.be.undefined;
+                    expect(mock.object.anyValue).toBeUndefined();
                 }
 
             });
@@ -848,7 +846,7 @@ describe("Mock", () => {
                 else {
                     const mock = Mock.ofType<TypeMoqTests.Doer>();
 
-                    expect(() => mock.setup(x => { x.doVoid(); x.doNumber(); })).to.throw(MockException);
+                    expect(() => mock.setup(x => { x.doVoid(); x.doNumber(); })).toThrow(MockException);
                 }
 
             });
@@ -863,7 +861,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x()).returns(() => 999);
 
-                    expect(mock.object()).to.eq(999);
+                    expect(mock.object()).toEqual(999);
                 }
 
             });
@@ -879,7 +877,7 @@ describe("Mock", () => {
                     const context = {};
                     mock.setup(fn => fn.bind(context)).returns(fn => 999);
 
-                    expect(mock.object.bind(context)).to.eq(999);
+                    expect(mock.object.bind(context)).toEqual(999);
                 }
 
             });
@@ -894,7 +892,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber()).returns(() => 999);
 
-                    expect(mock.object.doNumber()).to.eq(999);
+                    expect(mock.object.doNumber()).toEqual(999);
                 }
 
             });
@@ -909,9 +907,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isValue(321))).returns(() => 999);
 
-                    expect(mock.object(321)).to.eq(999);
-                    expect(mock.object(322)).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(321)).toEqual(999);
+                    expect(mock.object(322)).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -926,9 +924,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber(It.isValue(321))).returns(() => 999);
 
-                    expect(mock.object.doNumber(321)).to.eq(999);
-                    expect(mock.object.doNumber(322)).to.eq(undefined);
-                    expect(mock.object.doNumber()).to.eq(undefined);
+                    expect(mock.object.doNumber(321)).toEqual(999);
+                    expect(mock.object.doNumber(322)).toEqual(undefined);
+                    expect(mock.object.doNumber()).toEqual(undefined);
                 }
 
             });
@@ -943,9 +941,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x(321)).returns(() => 999);
 
-                    expect(mock.object(321)).to.eq(999);
-                    expect(mock.object(322)).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(321)).toEqual(999);
+                    expect(mock.object(322)).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -960,9 +958,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber(321)).returns(() => 999);
 
-                    expect(mock.object.doNumber(321)).to.eq(999);
-                    expect(mock.object.doNumber(322)).to.eq(undefined);
-                    expect(mock.object.doNumber()).to.eq(undefined);
+                    expect(mock.object.doNumber(321)).toEqual(999);
+                    expect(mock.object.doNumber(322)).toEqual(undefined);
+                    expect(mock.object.doNumber()).toEqual(undefined);
                 }
 
             });
@@ -977,9 +975,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isValue("abc"))).returns((s: string) => s.toUpperCase());
 
-                    expect(mock.object("abc")).to.eq("ABC");
-                    expect(mock.object("cba")).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object("abc")).toEqual("ABC");
+                    expect(mock.object("cba")).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -994,9 +992,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doString(It.isValue("abc"))).returns((s: string) => s.toUpperCase());
 
-                    expect(mock.object.doString("abc")).to.eq("ABC");
-                    expect(mock.object.doString("cba")).to.eq(undefined);
-                    expect(mock.object.doString()).to.eq(undefined);
+                    expect(mock.object.doString("abc")).toEqual("ABC");
+                    expect(mock.object.doString("cba")).toEqual(undefined);
+                    expect(mock.object.doString()).toEqual(undefined);
                 }
 
             });
@@ -1011,9 +1009,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x("abc")).returns((s: string) => s.toUpperCase());
 
-                    expect(mock.object("abc")).to.eq("ABC");
-                    expect(mock.object("cba")).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object("abc")).toEqual("ABC");
+                    expect(mock.object("cba")).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -1028,9 +1026,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doString("abc")).returns((s: string) => s.toUpperCase());
 
-                    expect(mock.object.doString("abc")).to.eq("ABC");
-                    expect(mock.object.doString("cba")).to.eq(undefined);
-                    expect(mock.object.doString()).to.eq(undefined);
+                    expect(mock.object.doString("abc")).toEqual("ABC");
+                    expect(mock.object.doString("cba")).toEqual(undefined);
+                    expect(mock.object.doString()).toEqual(undefined);
                 }
 
             });
@@ -1051,15 +1049,15 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isObjectWith(match))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object(bar2)).to.eq(undefined);
+                    expect(mock.object(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual(undefined);
 
                     bar2.anyValue = 42;
-                    expect(mock.object(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(new Object())).to.eq(undefined);
-                    expect(mock.object({ foo: 'nothing' })).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(new Object())).toEqual(undefined);
+                    expect(mock.object({ foo: 'nothing' })).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -1078,14 +1076,14 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isValue(bar1))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object(bar2)).to.eq(undefined);
+                    expect(mock.object(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual(undefined);
 
                     bar2.value = "Lorem ipsum dolor sit amet";
-                    expect(mock.object(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(new Object())).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(new Object())).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -1104,14 +1102,14 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doObject(It.isValue(bar1))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object.doObject(bar2)).to.eq(undefined);
+                    expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar2)).toEqual(undefined);
 
                     bar2.value = "Lorem ipsum dolor sit amet";
-                    expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(new Object())).to.eq(undefined);
-                    expect(mock.object.doObject()).to.eq(undefined);
+                    expect(mock.object.doObject(new Object())).toEqual(undefined);
+                    expect(mock.object.doObject()).toEqual(undefined);
                 }
 
             });
@@ -1130,14 +1128,14 @@ describe("Mock", () => {
 
                     mock.setup(x => x(bar1)).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object(bar2)).to.eq(undefined);
+                    expect(mock.object(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual(undefined);
 
                     bar2.value = "Lorem ipsum dolor sit amet";
-                    expect(mock.object(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(new Object())).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(new Object())).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -1156,14 +1154,14 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doObject(bar1)).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object.doObject(bar2)).to.eq(undefined);
+                    expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar2)).toEqual(undefined);
 
                     bar2.value = "Lorem ipsum dolor sit amet";
-                    expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(new Object())).to.eq(undefined);
-                    expect(mock.object.doObject()).to.eq(undefined);
+                    expect(mock.object.doObject(new Object())).toEqual(undefined);
+                    expect(mock.object.doObject()).toEqual(undefined);
                 }
 
             });
@@ -1182,11 +1180,11 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isAnyObject(TypeMoqTests.Bar))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object(new Object())).to.eq(undefined);
-                    expect(mock.object()).to.eq(undefined);
+                    expect(mock.object(new Object())).toEqual(undefined);
+                    expect(mock.object()).toEqual(undefined);
                 }
 
             });
@@ -1205,11 +1203,11 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doObject(It.isAnyObject(TypeMoqTests.Bar))).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(bar1)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
-                    expect(mock.object.doObject(bar2)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar1)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.doObject(bar2)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.doObject(new Object())).to.eq(undefined);
-                    expect(mock.object.doObject()).to.eq(undefined);
+                    expect(mock.object.doObject(new Object())).toEqual(undefined);
+                    expect(mock.object.doObject()).toEqual(undefined);
                 }
 
             });
@@ -1224,7 +1222,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isAnyString())).returns(s => s.toUpperCase());
 
-                    expect(mock.object("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
+                    expect(mock.object("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
                 }
 
             });
@@ -1239,7 +1237,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-                    expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
+                    expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
                 }
 
             });
@@ -1254,7 +1252,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isAnyNumber())).returns(() => 999);
 
-                    expect(mock.object(123)).to.eq(999);
+                    expect(mock.object(123)).toEqual(999);
                 }
 
             });
@@ -1269,7 +1267,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber(It.isAnyNumber())).returns(() => 999);
 
-                    expect(mock.object.doNumber(123)).to.eq(999);
+                    expect(mock.object.doNumber(123)).toEqual(999);
                 }
 
             });
@@ -1286,7 +1284,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.isAnyObject(TypeMoqTests.Bar))).returns(() => bar2);
 
-                    expect(mock.object(bar1)).to.eq(bar2);
+                    expect(mock.object(bar1)).toEqual(bar2);
                 }
 
             });
@@ -1303,7 +1301,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doBar(It.isAnyObject(TypeMoqTests.Bar))).returns(() => bar2);
 
-                    expect(mock.object.doBar(bar1)).to.eq(bar2);
+                    expect(mock.object.doBar(bar1)).toEqual(bar2);
                 }
 
             });
@@ -1321,9 +1319,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x(It.is((x: TypeMoqTests.Bar) => x.value === "Ut enim ad minim veniam"))).returns(() => bar2);
 
-                    expect(mock.object(bar1)).to.eq(bar2);
+                    expect(mock.object(bar1)).toEqual(bar2);
 
-                    expect(mock.object(bar2)).to.eq(undefined);
+                    expect(mock.object(bar2)).toEqual(undefined);
                 }
 
             });
@@ -1341,9 +1339,9 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doBar(It.is((x: TypeMoqTests.Bar) => x.value === "Ut enim ad minim veniam"))).returns(() => bar2);
 
-                    expect(mock.object.doBar(bar1)).to.eq(bar2);
+                    expect(mock.object.doBar(bar1)).toEqual(bar2);
 
-                    expect(mock.object.doBar(bar2)).to.eq(undefined);
+                    expect(mock.object.doBar(bar2)).toEqual(undefined);
                 }
 
             });
@@ -1366,17 +1364,17 @@ describe("Mock", () => {
                     const beanParams: BeanParams = { colour: 'red' };
 
                     service.setup(x => x.getBeans(It.is<BeanParams>(x => x === beanParams))).returns(() => 'success');
-                    expect(service.object.getBeans(beanParams)).to.not.eq('success');
+                    expect(service.object.getBeans(beanParams)).not.toEqual('success');
 
                     service.reset();
 
                     service.setup(x => x.getBeans(It.is<BeanParams>(x => _.isEqual(x, beanParams)))).returns(() => 'success');
-                    expect(service.object.getBeans(beanParams)).to.eq('success');
+                    expect(service.object.getBeans(beanParams)).toEqual('success');
 
                     service.reset();
 
                     service.setup(x => x.getBeans(beanParams)).returns(() => 'success');
-                    expect(service.object.getBeans(beanParams)).to.eq('success');
+                    expect(service.object.getBeans(beanParams)).toEqual('success');
                 }
 
             });
@@ -1391,7 +1389,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.foo).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-                    expect(mock.object.foo).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+                    expect(mock.object.foo).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
                 }
 
             });
@@ -1411,7 +1409,7 @@ describe("Mock", () => {
 
                     const user = new TypeMoqTests.DoerUser(mock.object);
 
-                    expect(user.execute("abc", 123)).to.eq("123");
+                    expect(user.execute("abc", 123)).toEqual("123");
                 }
 
             });
@@ -1428,7 +1426,7 @@ describe("Mock", () => {
                     mock.setup(m => m.getA(It.isValue("asdf"))).returns(() => "fdsa");
                     mock.setup(m => m.getB(It.isValue(123))).returns(() => 321);
 
-                    expect(TypeMoqTests.doSomething(mock.object)).equal("fdsa321");
+                    expect(TypeMoqTests.doSomething(mock.object)).toEqual("fdsa321");
                 }
 
             });
@@ -1453,11 +1451,11 @@ describe("Mock", () => {
                         });
 
                     promise.doSomething().then(value => {
-                        expect(value.result).to.eq("Success!");
-                        expect(value.op).to.be.a("function");
-                        expect(value.processData).to.be.a("function");
-                        expect(value.processError).to.be.a("function");
-                        expect(value.timeout).to.eq(200);
+                        expect(value.result).toEqual("Success!");
+                        expect(typeof value.op).toEqual("function");
+                        expect(typeof value.processData).toEqual("function");
+                        expect(typeof value.processError).toEqual("function");
+                        expect(value.timeout).toEqual(200);
                         done();
                     }).catch(e => {
                         done(e);
@@ -1477,7 +1475,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.instance()).returns(() => greeter);
 
-                    expect(mock.object.instance()).to.eq(greeter);
+                    expect(mock.object.instance()).toEqual(greeter);
                 }
 
             });
@@ -1515,11 +1513,11 @@ describe("Mock", () => {
 
                     myClass.useMyService()
                         .then(x => {
-                            console.log("Promise resolved!");
+                            // console.log("Promise resolved!");
                             done();
                         })
                         .catch(e => {
-                            console.log("Promise rejected!");
+                            // console.log("Promise rejected!");
                         })
                 }
                 else
@@ -1539,7 +1537,7 @@ describe("Mock", () => {
 
                     Promise.resolve(mock.object)
                         .then(x => {
-                            expect(x).eql(mock.object);
+                            expect(x).toEqual(mock.object);
                             done();
                         });
                 }
@@ -1560,7 +1558,7 @@ describe("Mock", () => {
 
                     Promise.resolve(mock.object)
                         .then(x => {
-                            expect(x).eql(mock.object);
+                            expect(x).toEqual(mock.object);
                             done();
                         });
                 }
@@ -1588,8 +1586,8 @@ describe("Mock", () => {
                     dataMock.setup(x => x.msg).returns(() => 'some msg');
                     serviceMock.setup(x => x.data).returns(() => dataMock.object);
 
-                    expect(dataMock.object.msg).eq('some msg');
-                    expect(serviceMock.object.data.msg).eq('some msg');
+                    expect(dataMock.object.msg).toEqual('some msg');
+                    expect(serviceMock.object.data.msg).toEqual('some msg');
                 }
             });
 
@@ -1612,12 +1610,12 @@ describe("Mock", () => {
 
                     mock.setup(x => x(new B(new A(), 1))).returns(() => 4);
 
-                    expect(mock.object(new B(mockA.target, 1))).eql(4);
-                    expect(() => mock.object(new B(mockA.object, 1))).to.throw(MockException);
-                    expect(() => mock.object(new B(mockA.target, 2))).to.throw(MockException);
+                    expect(mock.object(new B(mockA.target, 1))).toEqual(4);
+                    expect(() => mock.object(new B(mockA.object, 1))).toThrow(MockException);
+                    expect(() => mock.object(new B(mockA.target, 2))).toThrow(MockException);
 
-                    expect(mock.object(new B(new A(), 1))).eql(4);
-                    expect(() => mock.object(new B(new A(), 2))).to.throw(MockException);
+                    expect(mock.object(new B(new A(), 1))).toEqual(4);
+                    expect(() => mock.object(new B(new A(), 2))).toThrow(MockException);
                 }
             });
 
@@ -1640,12 +1638,12 @@ describe("Mock", () => {
 
                     mock.setup(x => x(new B(mockA.target, 1))).returns(() => 4);
 
-                    expect(mock.object(new B(mockA.target, 1))).eql(4);
-                    expect(() => mock.object(new B(mockA.object, 1))).to.throw(MockException);
-                    expect(() => mock.object(new B(mockA.target, 2))).to.throw(MockException);
+                    expect(mock.object(new B(mockA.target, 1))).toEqual(4);
+                    expect(() => mock.object(new B(mockA.object, 1))).toThrow(MockException);
+                    expect(() => mock.object(new B(mockA.target, 2))).toThrow(MockException);
 
-                    expect(() => mock.object(new B(new A(), 1))).to.throw(MockException);
-                    expect(() => mock.object(new B(new A(), 2))).to.throw(MockException);
+                    expect(() => mock.object(new B(new A(), 1))).toThrow(MockException);
+                    expect(() => mock.object(new B(new A(), 2))).toThrow(MockException);
                 }
             });
 
@@ -1663,7 +1661,7 @@ describe("Mock", () => {
             mock.setup(x => x.doVoid()).callback(() => called = true);
             mock.object.doVoid();
 
-            expect(called).to.eq(true);
+            expect(called).toEqual(true);
         });
 
         it("should execute callback when method with args is called", () => {
@@ -1675,11 +1673,11 @@ describe("Mock", () => {
             mock.setup(x => x.doString(It.isAnyString())).callback(() => called1 = true).returns(s => s.toUpperCase());
             mock.setup(x => x.doNumber(It.isAnyNumber())).callback(n => { numberArg = n; called2 = true; }).returns(n => n + 1);
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-            expect(called1).to.eq(true);
-            expect(mock.object.doNumber(999)).to.eq(1000);
-            expect(called2).to.eq(true);
-            expect(numberArg).to.eq(999);
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+            expect(called1).toEqual(true);
+            expect(mock.object.doNumber(999)).toEqual(1000);
+            expect(called2).toEqual(true);
+            expect(numberArg).toEqual(999);
         });
 
         describe("dynamic mock", () => {
@@ -1696,7 +1694,7 @@ describe("Mock", () => {
                     mock.setup(x => x.doVoid()).callback(() => called = true);
                     mock.object.doVoid();
 
-                    expect(called).to.eq(true);
+                    expect(called).toEqual(true);
                 }
 
             });
@@ -1714,11 +1712,11 @@ describe("Mock", () => {
                     mock.setup(x => x.doString(It.isAnyString())).callback(() => called1 = true).returns(s => s.toUpperCase());
                     mock.setup(x => x.doNumber(It.isAnyNumber())).callback(n => { numberArg = n; called2 = true; }).returns(n => n + 1);
 
-                    expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-                    expect(called1).to.eq(true);
-                    expect(mock.object.doNumber(999)).to.eq(1000);
-                    expect(called2).to.eq(true);
-                    expect(numberArg).to.eq(999);
+                    expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+                    expect(called1).toEqual(true);
+                    expect(mock.object.doNumber(999)).toEqual(1000);
+                    expect(called2).toEqual(true);
+                    expect(numberArg).toEqual(999);
                 }
 
             });
@@ -1735,10 +1733,10 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doOperation<void>(TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny(), TypeMoq.It.isAny()))
                         .callback((op, processData, processError, timeout) => {
-                            expect(op).to.be.a("function");
-                            expect(processData).to.be.a("function");
-                            expect(processError).to.be.a("function");
-                            expect(timeout).to.eq(200);
+                             expect(typeof op).toEqual("function");
+                             expect(typeof processData).toEqual("function");
+                             expect(typeof processError).toEqual("function");
+                            expect(timeout).toEqual(200);
                             done();
                         });
 
@@ -1760,8 +1758,8 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-            expect(mock.object.doNumber()).to.eq(101);
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+            expect(mock.object.doNumber()).toEqual(101);
         });
 
         it("should call the underlying object of a mock created from a class type with ctor params when callBase is true", () => {
@@ -1769,8 +1767,8 @@ describe("Mock", () => {
             const mock = Mock.ofType(TypeMoqTests.ClassWithNoDefaultConstructor, MockBehavior.Loose, undefined, "Lorem ipsum dolor sit amet", 999);
             mock.callBase = true;
 
-            expect(mock.object.stringValue).to.eq("Lorem ipsum dolor sit amet");
-            expect(mock.object.numberValue).to.eq(999);
+            expect(mock.object.stringValue).toEqual("Lorem ipsum dolor sit amet");
+            expect(mock.object.numberValue).toEqual(999);
         });
 
         it("should not call the underlying object of a mock created from a class type when callBase is false", () => {
@@ -1780,8 +1778,8 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-            expect(mock.object.doNumber()).to.eq(undefined);
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+            expect(mock.object.doNumber()).toEqual(undefined);
         });
 
         it("should call the underlying object of a mock created from an object when callBase is true", () => {
@@ -1792,8 +1790,8 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-            expect(mock.object.doNumber()).to.eq(101);
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+            expect(mock.object.doNumber()).toEqual(101);
         });
 
         it("should not call the underlying object of a mock created from an object when callBase is false", () => {
@@ -1804,8 +1802,8 @@ describe("Mock", () => {
 
             mock.setup(x => x.doString(It.isAnyString())).returns(s => s.toUpperCase());
 
-            expect(mock.object.doString("Lorem ipsum dolor sit amet")).to.eq("LOREM IPSUM DOLOR SIT AMET");
-            expect(mock.object.doNumber()).to.eq(undefined);
+            expect(mock.object.doString("Lorem ipsum dolor sit amet")).toEqual("LOREM IPSUM DOLOR SIT AMET");
+            expect(mock.object.doNumber()).toEqual(undefined);
         });
 
         it("should call the underlying object of a mock created from a function type when callBase is true", () => {
@@ -1817,9 +1815,9 @@ describe("Mock", () => {
 
             mock2.setup(x => x(1, 2, 3)).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock1.object()).to.eq("someFunc was called");
-            expect(mock2.object(3, 2, 1)).to.eq("someFuncWithArgs was called");
-            expect(mock2.object(1, 2, 3)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock1.object()).toEqual("someFunc was called");
+            expect(mock2.object(3, 2, 1)).toEqual("someFuncWithArgs was called");
+            expect(mock2.object(1, 2, 3)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
         });
 
         it("should not call the underlying object of a mock created from a function type when callBase is false", () => {
@@ -1831,9 +1829,9 @@ describe("Mock", () => {
 
             mock2.setup(x => x(1, 2, 3)).returns(() => "At vero eos et accusamus et iusto odio dignissimos ducimus");
 
-            expect(mock1.object()).to.eq(undefined);
-            expect(mock2.object(3, 2, 1)).to.eq(undefined);
-            expect(mock2.object(1, 2, 3)).to.eq("At vero eos et accusamus et iusto odio dignissimos ducimus");
+            expect(mock1.object()).toEqual(undefined);
+            expect(mock2.object(3, 2, 1)).toEqual(undefined);
+            expect(mock2.object(1, 2, 3)).toEqual("At vero eos et accusamus et iusto odio dignissimos ducimus");
         });
 
         it("should verify any inner calls inside a method call when callBase is true", () => {
@@ -1884,15 +1882,15 @@ describe("Mock", () => {
             mock.setup(x => x.increment()).callback(() => called = true);
             mock.setup(x => x.getValue()).returns(() => called ? 10000 : mock.target.getValue());
 
-            expect(mock.object.getValue()).equal(0);
+            expect(mock.object.getValue()).toEqual(0);
             mock.object.setValue(100);
-            expect(mock.object.getValue()).equal(100);
+            expect(mock.object.getValue()).toEqual(100);
             mock.object.increment();
-            expect(mock.object.getValue()).equal(10000);
+            expect(mock.object.getValue()).toEqual(10000);
 
             mock.callBase = false;
             called = false;
-            expect(mock.object.getValue()).equal(100);
+            expect(mock.object.getValue()).toEqual(100);
         });
 
         describe("dynamic mock", () => {
@@ -1907,7 +1905,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doVoid()).returns(() => 1000);
 
-                    expect(mock.target.doVoid()).to.eq(1000);
+                    expect(mock.target.doVoid()).toEqual(1000);
                 }
 
             });
@@ -1922,7 +1920,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doVoid()).returns(() => 1000);
 
-                    expect(() => mock.target.doVoid()).to.throw(TypeError);
+                    expect(() => mock.target.doVoid()).toThrow(TypeError);
                 }
 
             });
@@ -1934,12 +1932,14 @@ describe("Mock", () => {
     describe(".throws", () => {
 
         it("should throw specified exception when matching a no args function", () => {
+            const mock = Mock.ofInstance(TypeMoqTests.someFunc);
 
-            const mock: TypeMoq.IMock<() => string> = Mock.ofInstance(TypeMoqTests.someFunc);
+            mock
+                .setup(x => x())
+                .throws(new TypeMoqTests.CustomException());
 
-            mock.setup(x => x()).throws(new TypeMoqTests.CustomException());
-
-            expect(() => mock.object()).to.throw(TypeMoqTests.CustomException);
+            expect(() => mock.object())
+                .toThrow(TypeMoqTests.CustomException);
         });
 
         it("should throw specified exception when matching a function with args", () => {
@@ -1948,7 +1948,7 @@ describe("Mock", () => {
 
             mock.setup(x => x(It.isAny(), It.isAny(), It.isAny())).throws(new TypeMoqTests.CustomException());
 
-            expect(() => mock.object(1, 2, 3)).to.throw(TypeMoqTests.CustomException);
+            expect(() => mock.object(1, 2, 3)).toThrow(TypeMoqTests.CustomException);
         });
 
         it("should throw specified exception when matching a no args method", () => {
@@ -1957,7 +1957,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doVoid()).throws(new TypeMoqTests.CustomException());
 
-            expect(() => mock.object.doVoid()).to.throw(TypeMoqTests.CustomException);
+            expect(() => mock.object.doVoid()).toThrow(TypeMoqTests.CustomException);
         });
 
         it("should throw specified exception when matching a method with args", () => {
@@ -1966,7 +1966,7 @@ describe("Mock", () => {
 
             mock.setup(x => x.doNumber(999)).throws(new TypeMoqTests.CustomException());
 
-            expect(() => mock.object.doNumber(999)).to.throw(TypeMoqTests.CustomException);
+            expect(() => mock.object.doNumber(999)).toThrow(TypeMoqTests.CustomException);
         });
 
         describe("dynamic mock", () => {
@@ -1981,7 +1981,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doVoid()).throws(new TypeMoqTests.CustomException());
 
-                    expect(() => mock.object.doVoid()).to.throw(TypeMoqTests.CustomException);
+                    expect(() => mock.object.doVoid()).toThrow(TypeMoqTests.CustomException);
                 }
 
             });
@@ -1996,7 +1996,7 @@ describe("Mock", () => {
 
                     mock.setup(x => x.doNumber(999)).throws(new TypeMoqTests.CustomException());
 
-                    expect(() => mock.object.doNumber(999)).to.throw(TypeMoqTests.CustomException);
+                    expect(() => mock.object.doNumber(999)).toThrow(TypeMoqTests.CustomException);
                 }
 
             });
@@ -2023,21 +2023,21 @@ describe("Mock", () => {
             mock.object(1, 2, 3);
 
             mock.verify(x => x(It.isAnyNumber(), It.isAnyNumber(), It.isAnyNumber()), Times.atLeastOnce());
-            expect(() => mock.verify(x => x(3, 2, 1), Times.atLeastOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x(3, 2, 1), Times.atLeastOnce())).toThrow(MockException);
         });
 
         it("should throw if no args function not called at least once", () => {
 
             const mock: TypeMoq.IMock<() => string> = Mock.ofInstance(TypeMoqTests.someFunc);
 
-            expect(() => mock.verify(x => x(), Times.atLeastOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x(), Times.atLeastOnce())).toThrow(MockException);
         });
 
         it("should throw if function with params not called at least once", () => {
 
             const mock: TypeMoq.IMock<(a: any, b: any, c: any) => string> = Mock.ofInstance(TypeMoqTests.someFuncWithArgs);
 
-            expect(() => mock.verify(x => x(It.isAnyNumber(), It.isAnyNumber(), It.isAnyNumber()), Times.atLeastOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x(It.isAnyNumber(), It.isAnyNumber(), It.isAnyNumber()), Times.atLeastOnce())).toThrow(MockException);
         });
 
         it("should gracefully handle printing arguments with circular references", () => {
@@ -2047,7 +2047,7 @@ describe("Mock", () => {
 
             mock.object(circular, {}, {});
 
-            expect(() => mock.verify(x => x(It.isValue({}), It.isAny(), It.isAny()), Times.once())).to.throw(MockException);
+            expect(() => mock.verify(x => x(It.isValue({}), It.isAny(), It.isAny()), Times.once())).toThrow(MockException);
         });
 
         it("should check that no args method was called at least once", () => {
@@ -2117,15 +2117,15 @@ describe("Mock", () => {
 
             mock.object.doString("Ut enim ad minim veniam");
 
-            expect(() => mock.verify(x => x.doString(It.isAny()), Times.atMostOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x.doString(It.isAny()), Times.atMostOnce())).toThrow(MockException);
 
             mock.object.doVoid();
 
-            expect(() => mock.verify(x => x.doVoid(), Times.atMostOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x.doVoid(), Times.atMostOnce())).toThrow(MockException);
 
             mock.object.doBar(bar);
 
-            expect(() => mock.verify(x => x.doBar(It.is((x: TypeMoqTests.Bar) => x.value === "Ut enim ad minim veniam")), Times.atMostOnce())).to.throw(MockException);
+            expect(() => mock.verify(x => x.doBar(It.is((x: TypeMoqTests.Bar) => x.value === "Ut enim ad minim veniam")), Times.atMostOnce())).toThrow(MockException);
         });
 
         it("should verify all expectations were called at least once", () => {
@@ -2175,7 +2175,7 @@ describe("Mock", () => {
 
             mock.object.doVoid();
 
-            expect(() => mock.verifyAll()).to.throw(MockException);
+            expect(() => mock.verifyAll()).toThrow(MockException);
         });
 
         it("should verify all expectations not marked as verifiable were called once when behavior is strict", () => {
@@ -2204,7 +2204,7 @@ describe("Mock", () => {
 
             mock.object.doVoid();
 
-            expect(() => mock.verifyAll()).to.throw(MockException);
+            expect(() => mock.verifyAll()).toThrow(MockException);
         });
 
         it("should verify all expectations marked as verifiable were called a specific number of times", () => {
@@ -2231,7 +2231,7 @@ describe("Mock", () => {
 
             mock.object.doVoid();
 
-            expect(() => mock.verifyAll()).to.throw(MockException);
+            expect(() => mock.verifyAll()).toThrow(MockException);
         });
 
         it("should check mock with the same verifiable invocation setup multiple times", () => {
@@ -2241,7 +2241,7 @@ describe("Mock", () => {
             mock.setup(x => x(It.isValue(0))).returns(() => 0).verifiable();
             mock.setup(x => x(It.isValue(0))).returns(() => 0).verifiable();
 
-            expect(() => mock.verifyAll()).to.throw(MockException);
+            expect(() => mock.verifyAll()).toThrow(MockException);
 
             mock.object(0);
 
@@ -2249,7 +2249,7 @@ describe("Mock", () => {
 
             mock.object(0);
 
-            expect(() => mock.verifyAll()).to.throw(MockException);
+            expect(() => mock.verifyAll()).toThrow(MockException);
         });
 
         it("should be possible to chain callback and verifiable without an intermediary", () => {
@@ -2312,7 +2312,7 @@ describe("Mock", () => {
                 mock.object(2);
                 mock.object(1);
 
-                expect(() => mock.verifyAll()).to.throw(MockException);
+                expect(() => mock.verifyAll()).toThrow(MockException);
             });
 
             it("should check invocation order for same consecutive matcher", () => {
@@ -2337,7 +2337,7 @@ describe("Mock", () => {
                 mock.object(2);
                 mock.object(1);
 
-                expect(() => mock.verifyAll()).to.throw(MockException);
+                expect(() => mock.verifyAll()).toThrow(MockException);
             });
 
         });
@@ -2370,7 +2370,7 @@ describe("Mock", () => {
                     mock.object.save(null, 3);
 
                     mock.verify(x => x.save(null, 3), TypeMoq.Times.once());
-                    expect(() => mock.verify(x => x.save(null, 4), TypeMoq.Times.once())).to.throw(MockException);
+                    expect(() => mock.verify(x => x.save(null, 4), TypeMoq.Times.once())).toThrow(MockException);
                 }
 
             });
@@ -2442,11 +2442,11 @@ describe("Mock", () => {
                     mock.object.doString("Ut enim ad minim veniam");
                     mock.object.doBar(bar);
 
-                    expect(() => mock.verify(x => x.doString(It.isAny()), Times.atMostOnce())).to.throw(MockException);
+                    expect(() => mock.verify(x => x.doString(It.isAny()), Times.atMostOnce())).toThrow(MockException);
 
                     mock.object.doVoid();
 
-                    expect(() => mock.verify(x => x.doVoid(), Times.atMostOnce())).to.throw(MockException);
+                    expect(() => mock.verify(x => x.doVoid(), Times.atMostOnce())).toThrow(MockException);
                 }
 
             });
@@ -2500,7 +2500,7 @@ describe("Mock", () => {
 
                     mock.object.doVoid();
 
-                    expect(() => mock.verifyAll()).to.throw(MockException);
+                    expect(() => mock.verifyAll()).toThrow(MockException);
                 }
 
             });
@@ -2529,7 +2529,7 @@ describe("Mock", () => {
 
                     mock.object.doVoid();
 
-                    expect(() => mock.verifyAll()).to.throw(MockException);
+                    expect(() => mock.verifyAll()).toThrow(MockException);
                 }
 
             });
@@ -2560,7 +2560,7 @@ describe("Mock", () => {
 
                     mock.object.doVoid();
 
-                    expect(() => mock.verifyAll()).to.throw(MockException);
+                    expect(() => mock.verifyAll()).toThrow(MockException);
                 }
 
             });
@@ -2580,7 +2580,7 @@ describe("Mock", () => {
 
             const user1 = new TypeMoqTests.DoerUser(mock.object);
 
-            expect(user1.execute("abc", 123)).to.eq("123");
+            expect(user1.execute("abc", 123)).toEqual("123");
 
             mock.reset();
 
@@ -2588,8 +2588,8 @@ describe("Mock", () => {
 
             const user2 = new TypeMoqTests.DoerUser(mock.object);
 
-            expect(user2.execute("abc", 123)).to.eq("456");
-            expect(user2.execute("abcd", 1234)).to.eq("456");
+            expect(user2.execute("abc", 123)).toEqual("456");
+            expect(user2.execute("abcd", 1234)).toEqual("456");
         });
 
         it("should remove any previous expectations", () => {
@@ -2647,7 +2647,7 @@ describe("Mock", () => {
 
                     const user1 = new TypeMoqTests.DoerUser(mock.object);
 
-                    expect(user1.execute("abc", 123)).to.eq("123");
+                    expect(user1.execute("abc", 123)).toEqual("123");
 
                     mock.reset();
 
@@ -2655,7 +2655,7 @@ describe("Mock", () => {
 
                     const user2 = new TypeMoqTests.DoerUser(mock.object);
 
-                    expect(user2.execute("abc", 123)).to.eq("456");
+                    expect(user2.execute("abc", 123)).toEqual("456");
                 }
 
             });
@@ -2698,17 +2698,17 @@ describe("Mock", () => {
 
     });
 
-    describe("with chai,should.js,expect.js,better-assert expectations", () => {
+    // describe("with chai,should.js,expect.js,better-assert expectations", () => {
 
-        let mock: TypeMoq.IMock<TypeMoqTests.Bar>;
+    //     let mock: TypeMoq.IMock<TypeMoqTests.Bar>;
 
-        beforeEach(() => {
-            mock = Mock.ofType(TypeMoqTests.Bar);
-        });
+    //     beforeEach(() => {
+    //         mock = Mock.ofType(TypeMoqTests.Bar);
+    //     });
 
-        //expect(mock(obj => obj.method("ping"))).to.have.been.called.atLeastOnce
-        it("should check that method with args was called at least once");
+    //     //expect(mock(obj => obj.method("ping"))).to.have.been.called.atLeastOnce
+    //     // it.todo("should check that method with args was called at least once", () => {});
 
-    });
+    // });
 
 });

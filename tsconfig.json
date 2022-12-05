@@ -1,18 +1,25 @@
 ﻿{
-  "compileOnSave": false,
-  "compilerOptions": {
-    "outDir": "dist",
-    "target": "es5",
-    "module": "es2015",
-    "lib": ["ES2015", "DOM"],
-    "noImplicitUseStrict": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "sourceMap": true
-  }
-,
-"exclude": [ "dist"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "es6",
+        "module": "es6",
+        "lib": [
+            "ES2016",
+            "DOM"
+        ],
+        "noImplicitUseStrict": true,
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "skipLibCheck": true,
+        "declaration": true,
+        "sourceMap": true
+    },
+    "include": [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "dist"
+    ]
 }

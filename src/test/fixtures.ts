@@ -1,6 +1,4 @@
-﻿import { Utils } from "./Utils";
-
-export function someGlobalFunc() {
+﻿export function someGlobalFunc() {
     return "someGlobalFunc was called";
 }
 
@@ -9,7 +7,7 @@ export function someGlobalFuncWithArgs(a: any, b: any, c: any) {
 }
 
 export class GlobalBar implements IGlobalBar {
-    value: string = '';
+    value: string = "";
 }
 
 export interface IGlobalBar {
@@ -17,7 +15,6 @@ export interface IGlobalBar {
 }
 
 export module TypeMoqTests {
-
     export function someFunc() {
         return "someFunc was called";
     }
@@ -27,16 +24,27 @@ export module TypeMoqTests {
     }
 
     export class CustomException implements Error {
-        constructor(public name: string = null, public message: string = null) {
+        constructor(
+            public name: string = null,
+            public message: string = null
+        ) {
         }
     }
 
     export class Foo {
-        constructor(private _bar: IBar) { this._bar = _bar || new Bar(); }
+        constructor(private _bar: IBar) {
+            this._bar = _bar || new Bar();
+        }
 
-        get bar(): IBar { return this._bar; }
-        do(stringValue: string) { return 'Foo.do:' + stringValue; }
-        setBar(value: string) { this._bar.value = value; }
+        get bar(): IBar {
+            return this._bar;
+        }
+        do(stringValue: string) {
+            return "Foo.do:" + stringValue;
+        }
+        setBar(value: string) {
+            this._bar.value = value;
+        }
 
         register() {
             this.canExecute();
@@ -44,7 +52,7 @@ export module TypeMoqTests {
 
         registerLambda = () => {
             this.canExecute();
-        }
+        };
 
         canExecute(): void {
             //console.log('Foo.canExecute()');
@@ -54,20 +62,26 @@ export module TypeMoqTests {
     export class GenericFoo<T> {
         private _bar: T;
 
-        constructor(barCtor?: { new (): T }, public numberValue?: number) { this._bar = new barCtor(); }
+        constructor(barCtor?: { new (): T }, public numberValue?: number) {
+            this._bar = new barCtor();
+        }
 
-        get bar(): T { return this._bar; }
-        do(stringValue: string) { return 'GenericFoo.do:' + stringValue + ': ' + this._bar.toString(); }
+        get bar(): T {
+            return this._bar;
+        }
+        do(stringValue: string) {
+            return "GenericFoo.do:" + stringValue + ": " + this._bar.toString();
+        }
     }
 
     export enum AnEnum {
         One = 1,
         Two,
-        Three
+        Three,
     }
 
     export class Bar implements IBar {
-        value: string = '';
+        value: string = "";
         anyValue: any = undefined;
         enumValue: AnEnum;
     }
@@ -85,11 +99,19 @@ export module TypeMoqTests {
     }
 
     export class Doer implements IDo {
-        doVoid(): void { }
-        doNumber(n?: number): number { return n || 101; }
-        doString(s?: string): string { return s || 'xyz'; }
-        doObject(o?: Object): Object { return o || new Object(); }
-        doBar(b?: Bar): Bar { return b; }
+        doVoid(): void {}
+        doNumber(n?: number): number {
+            return n || 101;
+        }
+        doString(s?: string): string {
+            return s || "xyz";
+        }
+        doObject(o?: Object): Object {
+            return o || new Object();
+        }
+        doBar(b?: Bar): Bar {
+            return b;
+        }
     }
 
     export class DoerUser {
@@ -105,42 +127,67 @@ export module TypeMoqTests {
         }
     }
 
-    export class FooService implements IFooService { }
-    export interface IFooService { }
+    export class FooService implements IFooService {}
+    export interface IFooService {}
 
     export class FooWithPublicGetterAndSetter {
         private _foo: string;
 
-        public get foo(): string { return this._foo; }
-        public set foo(value: string) { this._foo = value; }
+        public get foo(): string {
+            return this._foo;
+        }
+        public set foo(value: string) {
+            this._foo = value;
+        }
     }
 
     export class FooWithPrivateGetterAndSetter {
         private _foo: string;
 
-        private get foo(): string { return this._foo; }
-        private set foo(value: string) { this._foo = value; }
+        private get foo(): string {
+            return this._foo;
+        }
+        private set foo(value: string) {
+            this._foo = value;
+        }
     }
 
     export class ClassWithNoDefaultConstructor {
-        constructor(private _stringValue: string, private _numberValue: number) { }
+        constructor(
+            private _stringValue: string,
+            private _numberValue: number
+        ) {}
 
-        get stringValue(): string { return this._stringValue; }
-        set stringValue(value: string) { this._stringValue = value; }
+        get stringValue(): string {
+            return this._stringValue;
+        }
+        set stringValue(value: string) {
+            this._stringValue = value;
+        }
 
-        get numberValue(): number { return this._numberValue; }
-        set numberValue(value: number) { this._numberValue = value; }
+        get numberValue(): number {
+            return this._numberValue;
+        }
+        set numberValue(value: number) {
+            this._numberValue = value;
+        }
     }
 
     export class FooWithConstructors {
         private _x: any;
 
-        constructor(x: { stringValue: string; numberValue: number; });
+        constructor(x: { stringValue: string; numberValue: number });
         constructor(x: number);
-        constructor(x: any) { this._x = x; }
+        constructor(x: any) {
+            this._x = x;
+        }
 
-        get x() { return this._x; }
-        set x(value) { this._x = value; }
+        get x() {
+            return this._x;
+        }
+        set x(value) {
+            this._x = value;
+        }
 
         toString(): string {
             return this._x.toString();
@@ -148,15 +195,21 @@ export module TypeMoqTests {
     }
 
     export class FooOverride extends Foo {
-        do(stringValue: string) { return 'FooOverride.do: ' + super.do(stringValue); }
+        do(stringValue: string) {
+            return "FooOverride.do: " + super.do(stringValue);
+        }
     }
 
     export class GenericFooOverride<T> extends GenericFoo<T> {
-        do(stringValue: string) { return 'GenericFooOverride.do: ' + super.do(stringValue); }
+        do(stringValue: string) {
+            return "GenericFooOverride.do: " + super.do(stringValue);
+        }
     }
 
     export class NumberFooOverride extends GenericFooOverride<Number> {
-        do(stringValue: string) { return 'NumberFooOverride.do: ' + super.do(stringValue); }
+        do(stringValue: string) {
+            return "NumberFooOverride.do: " + super.do(stringValue);
+        }
     }
 
     export interface IFoo {
@@ -179,27 +232,37 @@ export module TypeMoqTests {
 
     export class FooBase {
         static valueField: number;
-        static do(value: number): void { }
-        check(value: string): boolean { return true; }
-        getIsProtected(): boolean { return this.isProtected(); }
-        isProtected(): boolean { return true; }
-        true(): boolean { return true; }
+        static do(value: number): void {}
+        check(value: string): boolean {
+            return true;
+        }
+        getIsProtected(): boolean {
+            return this.isProtected();
+        }
+        isProtected(): boolean {
+            return true;
+        }
+        true(): boolean {
+            return true;
+        }
         baseCalled: boolean = false;
         baseCall(value?: string): boolean {
             this.baseCalled = true;
             return this.baseCalled;
         }
-        generic<T>(): number { return 0; }
+        generic<T>(): number {
+            return 0;
+        }
     }
 
     export interface INewFoo extends IFoo {
         bar: IBar;
     }
 
-    export interface INewBar extends IBar { }
+    export interface INewBar extends IBar {}
 
     export class CircularFoo {
-        circularReference: CircularFoo
+        circularReference: CircularFoo;
 
         constructor() {
             this.circularReference = this;
@@ -223,7 +286,7 @@ export module TypeMoqTests {
         }
 
         greet(): string {
-            return 'Hello';
+            return "Hello";
         }
     }
 
@@ -253,10 +316,10 @@ export module TypeMoqTests {
     }
 
     export class AnotherPromise {
-        constructor(private myPromise: APromise) { }
+        constructor(private myPromise: APromise) {}
         public doSomething(): Promise<OperationResult> {
             return this.myPromise.doOperation<OperationResult>(
-                () => { },
+                () => {},
                 (x) => true,
                 (x) => true,
                 200
@@ -265,15 +328,25 @@ export module TypeMoqTests {
     }
 
     export class XMLHttpRequest {
-        open(method: string, url: string, async?: boolean, user?: string, password?: string): void { };
-        send(data?: Document): void
-        send(data?: string): void
-        send(data?: any): void { };
+        open(
+            method: string,
+            url: string,
+            async?: boolean,
+            user?: string,
+            password?: string
+        ): void {}
+        send(data?: Document): void;
+        send(data?: string): void;
+        send(data?: any): void {}
     }
 
     class LocalStorage {
         _store: any = {};
-        getItem(key: string): any { return this._store[key]; }
-        setItem(key: string, data: string): void { this._store[key] = data; }
+        getItem(key: string): any {
+            return this._store[key];
+        }
+        setItem(key: string, data: string): void {
+            this._store[key] = data;
+        }
     }
 }

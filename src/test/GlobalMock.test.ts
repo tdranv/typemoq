@@ -1,4 +1,4 @@
-﻿import * as TypeMoq from "typemoq";
+﻿import * as TypeMoq from "../typemoq";
 
 import { TypeMoqTests, GlobalBar, IGlobalBar, someGlobalFunc, someGlobalFuncWithArgs } from "./fixtures";
 import { Utils } from "./Utils";
@@ -7,8 +7,6 @@ const GlobalMock = TypeMoq.GlobalMock;
 const GlobalScope = TypeMoq.GlobalScope;
 const It = TypeMoq.It;
 const Times = TypeMoq.Times;
-
-import { expect } from "chai";
 
 let container: any;
 if (Utils.isNodeJS())
@@ -32,21 +30,21 @@ describe("GlobalMock", () => {
 
             const mock: TypeMoq.IGlobalMock<GlobalBar> = GlobalMock.ofType(GlobalBar, container);
 
-            expect(mock).to.be.not.null;
+            expect(mock).not.toBeNull();
         });
 
         it("should create an instance using interface as type variable and allow interface cast", () => {
 
             const mock: TypeMoq.IGlobalMock<IGlobalBar> = GlobalMock.ofType(GlobalBar, container);
 
-            expect(mock).to.be.not.null;
+            expect(mock).not.toBeNull();
         });
 
         it("should create an instance using interface as type variable and class as ctor parameter", () => {
 
             const mock: TypeMoq.IGlobalMock<IGlobalBar> = GlobalMock.ofType<IGlobalBar>(GlobalBar, container);
 
-            expect(mock).to.be.not.null;
+            expect(mock).not.toBeNull();
         });
 
         it("should create an instance using class as ctor parameter and ctor args", () => {
@@ -55,7 +53,7 @@ describe("GlobalMock", () => {
             const foo = new TypeMoqTests.Foo(bar);
             const mock: TypeMoq.IGlobalMock<TypeMoqTests.Foo> = GlobalMock.ofInstance(foo, "foo", container);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance using a generic class as ctor parameter and ctor args", () => {
@@ -63,7 +61,7 @@ describe("GlobalMock", () => {
             const foo = new TypeMoqTests.GenericFoo(TypeMoqTests.Bar);
             const mock: TypeMoq.IGlobalMock<TypeMoqTests.GenericFoo<TypeMoqTests.Bar>> = GlobalMock.ofInstance(foo, "foo", container);
 
-            expect(mock.object).to.be.not.null;
+            expect(mock.object).not.toBeNull();
         })
 
         it("should create an instance from an existing object", () => {
@@ -72,7 +70,7 @@ describe("GlobalMock", () => {
 
             const mock: TypeMoq.IGlobalMock<GlobalBar> = GlobalMock.ofInstance(bar, "bar", container);
 
-            expect(mock).to.be.not.null;
+            expect(mock).not.toBeNull();
         });
 
         it("should create an instance from a function object", () => {
@@ -80,8 +78,8 @@ describe("GlobalMock", () => {
             const mock1: TypeMoq.IGlobalMock<() => string> = GlobalMock.ofInstance(someGlobalFunc, undefined, container);
             const mock2: TypeMoq.IGlobalMock<(a: any, b: any, c: any) => string> = GlobalMock.ofInstance(someGlobalFuncWithArgs, undefined, container);
 
-            expect(mock1).to.be.not.null;
-            expect(mock2).to.be.not.null;
+            expect(mock1).not.toBeNull();
+            expect(mock2).not.toBeNull();
         });
 
         describe("dynamic mock", () => {
@@ -94,11 +92,11 @@ describe("GlobalMock", () => {
                 else {
                     const mock: TypeMoq.IGlobalMock<TypeMoqTests.IThing> = GlobalMock.ofType2<TypeMoqTests.IThing>("TypeMoqTests.IThing", container);
 
-                    expect(mock.object).to.be.not.null;
-                    expect(mock.object.getA("abc")).to.be.not.null;
-                    expect(mock.object.getB(123)).to.be.not.null;
-                    expect(mock.object.getC()).to.be.not.null;
-                    expect(mock.object.valueA).to.be.not.null;
+                    expect(mock.object).not.toBeNull();
+                    expect(mock.object.getA("abc")).not.toBeNull();
+                    expect(mock.object.getB(123)).not.toBeNull();
+                    expect(mock.object.getC()).not.toBeNull();
+                    expect(mock.object.valueA).not.toBeNull();
 
                 }
             });
@@ -214,7 +212,7 @@ describe("GlobalMock", () => {
 
                 GlobalScope.using(mock).with(() => {
 
-                    expect(localStorage.getItem("xyz")).to.eq("[]");
+                    expect(localStorage.getItem("xyz")).toEqual("[]");
 
                     mock.verify(x => x.getItem(It.isAnyString()), Times.exactly(1));
 
@@ -222,7 +220,7 @@ describe("GlobalMock", () => {
 
                 localStorage.setItem("xyz", "Lorem ipsum dolor sit amet");
 
-                expect(localStorage.getItem("xyz")).to.eq("Lorem ipsum dolor sit amet");
+                expect(localStorage.getItem("xyz")).toEqual("Lorem ipsum dolor sit amet");
 
                 mock.verify(x => x.getItem(It.isAnyString()), Times.exactly(1));
             }
@@ -261,7 +259,7 @@ describe("GlobalMock", () => {
                 }
             });
 
-            it("should check that 'XmlHttpRequest' global object is auto sandboxed", () => {
+            it.only("should check that 'XmlHttpRequest' global object is auto sandboxed", () => {
 
                 if (!hasProxyES6) {
                     console.log(noProxyES6Msg);
