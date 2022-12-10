@@ -30,9 +30,8 @@
     "typescript"
   ],
   "scripts": {
-    "build": "gulp build",
-    "test": "npm run compile && jest",
-    "compile": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "npm run build && jest"
   },
   "dependencies": {
     "circular-json": "0.3.1",
