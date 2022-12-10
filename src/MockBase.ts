@@ -16,7 +16,7 @@ export abstract class MockBase<T> implements all.IMock<T> {
         public readonly target: T,
         public readonly canOverrideTarget: boolean,
         public readonly behavior: all.MockBehavior = all.MockBehavior.Loose) {
-        
+
         this._id = this.generateId();
         this._name = this.getNameOf(this.target);
     }
@@ -69,6 +69,11 @@ export abstract class MockBase<T> implements all.IMock<T> {
 
     reset(): void {
         this._interceptor.reset();
+    }
+
+    verifyAndReset(): void {
+        this.verifyAll();
+        this.reset();
     }
 
 }

@@ -48,4 +48,8 @@ export class DynamicMock<T extends object> extends MockBase<T> {
         }
     }
 
+    verifyAndReset(): void {
+        this.verifyAll();
+        this.reset();
+    }
 }

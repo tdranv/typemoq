@@ -5,6 +5,7 @@ import { MockBehavior } from "./_all";
 import { InterceptorExecute } from "./InterceptorExecute";
 import { MethodCall } from "./MethodCall";
 import { MethodCallReturn } from "./MethodCallReturn";
+import { threadId } from "worker_threads";
 
 export class StaticMock<T> extends MockBase<T> {
 
@@ -71,4 +72,8 @@ export class StaticMock<T> extends MockBase<T> {
         }
     }
 
+    verifyAndReset(): void {
+        this.verifyAll();
+        this.reset();
+    }
 }

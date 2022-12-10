@@ -12,5 +12,6 @@ export interface IMock<T> {
     setup<TResult>(expression: common.IFunc2<T, TResult>): MethodCallReturn<T, TResult>;
     verify<TResult>(expression: common.IFunc2<T, TResult>, times: Times): void;
     verifyAll(): void;
+    verifyAndReset(): void;
     reset(): void;
 }

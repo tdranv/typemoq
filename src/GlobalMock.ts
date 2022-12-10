@@ -41,4 +41,9 @@ export class GlobalMock<T> implements all.IGlobalMock<T> {
     reset(): void {
         this.mock.reset();
     }
+
+    verifyAndReset(): void {
+        this.verifyAll();
+        this.reset();
+    }
 }
