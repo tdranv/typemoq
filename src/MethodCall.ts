@@ -50,7 +50,7 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
         return result;
     }
 
-    static ofDynamicMock<U, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
+    static ofDynamicMock<U extends object, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
         let interceptor = new InterceptorSetup<U>();
         let proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
         let result = new MethodCall(mock, setupExpression, interceptor, proxy);

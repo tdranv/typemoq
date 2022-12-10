@@ -11,7 +11,7 @@ export class MockApi {
         return mock;
     }
 
-    static ofType<U>(targetConstructor?: common.CtorWithArgs<U>, behavior = MockBehavior.Loose, shouldOverrideTarget = true, ...targetConstructorArgs: any[]): IMock<U> {
+    static ofType<U extends object>(targetConstructor?: common.CtorWithArgs<U>, behavior = MockBehavior.Loose, shouldOverrideTarget = true, ...targetConstructorArgs: any[]): IMock<U> {
         let mock: IMock<U>;
         if (targetConstructor)
             mock = MockApi.ofType2(targetConstructor, targetConstructorArgs, behavior, shouldOverrideTarget);

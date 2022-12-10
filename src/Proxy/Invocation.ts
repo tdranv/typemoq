@@ -40,9 +40,9 @@ export class MethodInvocation extends BaseInvocation {
         super(proxyType, callType);
 
         if (args) {
-            this._args = <any>_.cloneDeep(args);
+            this._args = _.cloneDeep(args);
             this._args.length = args.length;
-            this._args.callee = args.callee;
+            // this._args.callee = args.callee;
         }
     }
 
@@ -122,7 +122,7 @@ export class ValueSetterInvocation extends BaseInvocation {
 
         this._args = <any>_.cloneDeep(args);
         this._args.length = args.length;
-        this._args.callee = args.callee;
+        // this._args.callee = args.callee;
     }
 
     get args(): IArguments { return this._args; }
