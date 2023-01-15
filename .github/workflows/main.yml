@@ -1,10 +1,8 @@
-name: Publish
+name: CI
 on:
   push:
     branches:
-      - "main"
-
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+      - "**"
 
 jobs:
   build:
@@ -20,7 +18,4 @@ jobs:
           cache: "pnpm"
 
       - run: pnpm install --frozen-lockfile
-        with:
-          publish: pnpm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm run lint && pnpm run build
