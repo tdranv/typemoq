@@ -1,5 +1,11 @@
 v2.1.0 / 2017-10-31
 
+## 2.2.0
+
+### Minor Changes
+
+- b9fe64c: fix url
+
 ## 2.1.2
 
 ### Patch Changes
