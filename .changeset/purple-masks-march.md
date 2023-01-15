@@ -1,5 +1,0 @@
----
-"typemoq": patch
----
-
-test-this
