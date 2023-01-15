@@ -3,9 +3,6 @@
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,
         "declaration": true,
-        "forceConsistentCasingInFileNames": true,
-        "baseUrl": ".",
-        "outDir": "build",
         "allowJs": true,
         "lib": [
             "ESNext",
@@ -13,7 +10,6 @@
         ],
         "module": "commonjs",
         "noEmitOnError": true,
-        "skipLibCheck": true,
         "strictNullChecks": false,
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false,
@@ -22,15 +18,17 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "sourceMap": true,
-        "strict": false,
         "target": "ES2016",
         "experimentalDecorators": true,
         "noResolve": false,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+        "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+        "strict": false, /* Enable all strict type-checking options. */
+        "skipLibCheck": true, /* Skip type checking all .d.ts files. */
+        "noUncheckedIndexedAccess": true,
+        "noEmit": true
     },
-    "include": [
-        "src/**/*.ts",
-    ],
     "exclude": [
         "node_modules",
         "src/tests/**"
