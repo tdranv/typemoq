@@ -9,11 +9,7 @@
   "typings": "dist/typemoq.d.ts",
   "types": "dist/typemoq.d.ts",
   "files": [
-    "dist",
-    "src",
-    "test",
-    "gulpfile.js",
-    "karma.conf.js"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -32,6 +28,7 @@
     "typescript"
   ],
   "scripts": {
+    "prepare": "pnpm build",
     "build": "tsup src/typemoq.ts --format cjs,esm --dts",
     "lint": "tsc",
     "test": "jest"
