@@ -1,5 +1,11 @@
 v2.1.0 / 2017-10-31
 
+## 2.4.0
+
+### Minor Changes
+
+- 3e7166a: formatting and eslint
+
 ## 2.3.0
 
 ### Minor Changes
