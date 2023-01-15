@@ -14,7 +14,7 @@ export interface IGlobalBar {
     value: string;
 }
 
-export module TypeMoqTests {
+export module TestData {
     export function someFunc() {
         return "someFunc was called";
     }

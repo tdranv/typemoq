@@ -1,6 +1,6 @@
 ﻿import * as TypeMoq from "../typemoq";
 
-import { TypeMoqTests, GlobalBar, IGlobalBar, someGlobalFunc, someGlobalFuncWithArgs } from "./fixtures";
+import { TestData, GlobalBar, IGlobalBar, someGlobalFunc, someGlobalFuncWithArgs } from "./fixtures";
 import { Utils } from "./Utils";
 
 const GlobalMock = TypeMoq.GlobalMock;
@@ -17,7 +17,7 @@ else
 container["someGlobalFunc"] = someGlobalFunc;
 container["someGlobalFuncWithArgs"] = someGlobalFuncWithArgs;
 container["GlobalBar"] = GlobalBar;
-container["XMLHttpRequest"] = TypeMoqTests.XMLHttpRequest;
+container["XMLHttpRequest"] = TestData.XMLHttpRequest;
 
 const hasProxyES6 = (typeof Proxy != "undefined");
 const noProxyES6Msg = "global 'Proxy' object not available";
@@ -49,17 +49,17 @@ describe.skip("GlobalMock", () => {
 
         it("should create an instance using class as ctor parameter and ctor args", () => {
 
-            const bar = new TypeMoqTests.Bar();
-            const foo = new TypeMoqTests.Foo(bar);
-            const mock: TypeMoq.IGlobalMock<TypeMoqTests.Foo> = GlobalMock.ofInstance(foo, "foo", container);
+            const bar = new TestData.Bar();
+            const foo = new TestData.Foo(bar);
+            const mock: TypeMoq.IGlobalMock<TestData.Foo> = GlobalMock.ofInstance(foo, "foo", container);
 
             expect(mock.object).not.toBeNull();
         });
 
         it("should create an instance using a generic class as ctor parameter and ctor args", () => {
 
-            const foo = new TypeMoqTests.GenericFoo(TypeMoqTests.Bar);
-            const mock: TypeMoq.IGlobalMock<TypeMoqTests.GenericFoo<TypeMoqTests.Bar>> = GlobalMock.ofInstance(foo, "foo", container);
+            const foo = new TestData.GenericFoo(TestData.Bar);
+            const mock: TypeMoq.IGlobalMock<TestData.GenericFoo<TestData.Bar>> = GlobalMock.ofInstance(foo, "foo", container);
 
             expect(mock.object).not.toBeNull();
         })
@@ -90,7 +90,7 @@ describe.skip("GlobalMock", () => {
                     console.log(noProxyES6Msg);
                 }
                 else {
-                    const mock: TypeMoq.IGlobalMock<TypeMoqTests.IThing> = GlobalMock.ofType2<TypeMoqTests.IThing>("TypeMoqTests.IThing", container);
+                    const mock: TypeMoq.IGlobalMock<TestData.IThing> = GlobalMock.ofType2<TestData.IThing>("TypeMoqTests.IThing", container);
 
                     expect(mock.object).not.toBeNull();
                     expect(mock.object.getA("abc")).not.toBeNull();
