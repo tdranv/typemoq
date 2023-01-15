@@ -1,5 +1,11 @@
 v2.1.0 / 2017-10-31
 
+## 2.1.2
+
+### Patch Changes
+
+- 5d3c1a1: fix-tsconfig
+
 ## 2.1.1
 
 ### Patch Changes
