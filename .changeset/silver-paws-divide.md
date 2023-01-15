@@ -1,5 +1,0 @@
----
-"typemoq": patch
----
-
-fix-tsconfig
