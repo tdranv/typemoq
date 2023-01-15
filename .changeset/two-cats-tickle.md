@@ -1,5 +1,0 @@
----
-"typemoq": minor
----
-
-fix files

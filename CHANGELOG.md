@@ -1,5 +1,11 @@
 v2.1.0 / 2017-10-31
 
+## 2.3.0
+
+### Minor Changes
+
+- a814f02: fix files
+
 ## 2.2.0
 
 ### Minor Changes
