@@ -1,0 +1,5 @@
+---
+"typemoq": minor
+---
+
+fix url
