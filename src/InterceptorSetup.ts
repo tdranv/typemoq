@@ -1,16 +1,19 @@
-﻿import * as all from "./_all";
+﻿import * as all from './_all';
 
 export class InterceptorSetup<T> implements all.ICallInterceptor {
     private _interceptedCall: all.ICallContext;
 
-    get interceptedCall(): all.ICallContext { return this._interceptedCall; }
+    get interceptedCall(): all.ICallContext {
+        return this._interceptedCall; 
+    }
 
     intercept(invocation: all.ICallContext) {
         invocation.invocationType = all.InvocationType.SETUP;
         
         if (invocation.proxyType == all.ProxyType.DYNAMIC &&
-            invocation.callType == all.CallType.UNKNOWN)
+            invocation.callType == all.CallType.UNKNOWN) {
             invocation.callType = all.CallType.PROPERTY;
+        }
 
         if (this._interceptedCall) {
             throw new all.MockException(all.MockExceptionReason.MoreThanOneSetup,
@@ -21,8 +24,9 @@ export class InterceptorSetup<T> implements all.ICallInterceptor {
     }
 
     removeInvocation(invocation: all.ICallContext) {
-        if(this._interceptedCall && 
-            this._interceptedCall === invocation)
-                this._interceptedCall = undefined;
+        if (this._interceptedCall && 
+            this._interceptedCall === invocation) {
+            this._interceptedCall = undefined;
+        }
     }
 }

@@ -1,9 +1,9 @@
-import * as common from "../Common/_all";
-import { functionName } from "../Common/_all";
-import { ICallContext, ProxyType, CallType } from "./ICallContext";
-import { ICallInterceptor } from "./ICallInterceptor";
-import * as inv from "./Invocation";
-import { IProxyHandler, PropKey } from "./IProxyHandler";
+import * as common from '../Common/_all';
+import { functionName } from '../Common/_all';
+import { ICallContext, ProxyType, CallType } from './ICallContext';
+import { ICallInterceptor } from './ICallInterceptor';
+import * as inv from './Invocation';
+import { IProxyHandler, PropKey } from './IProxyHandler';
 
 export class ProxyES6Handler<T extends object> implements IProxyHandler<T> {
 
@@ -24,7 +24,7 @@ export class ProxyES6Handler<T extends object> implements IProxyHandler<T> {
 
         if (p !== Symbol.toStringTag &&
             p !== Symbol.toPrimitive &&
-            p !== "toJSON") {
+            p !== 'toJSON') {
 
             const propValue = (<any>target)[p];
             const method = new inv.PropertyInfo(target, <string>p);
@@ -33,10 +33,10 @@ export class ProxyES6Handler<T extends object> implements IProxyHandler<T> {
             this._interceptor.intercept(invocation);
 
             if (invocation.callType == CallType.PROPERTY &&
-                invocation.property.desc) // value getter invocation at execution time
-
+                invocation.property.desc) {
+                // value getter invocation at execution time
                 return invocation.returnValue;
-            else
+            } else {
                 return (...args: any[]) => {
 
                     this._interceptor.removeInvocation(invocation);
@@ -46,10 +46,11 @@ export class ProxyES6Handler<T extends object> implements IProxyHandler<T> {
                     this._interceptor.intercept(methodInvocation);
 
                     return methodInvocation.returnValue;
-                }
-        }
-        else
+                };
+            }
+        } else {
             return Reflect.get(<Object>target, p, receiver);
+        }
     }
 
     set(target: T, p: PropKey, value: any, receiver: any): boolean {

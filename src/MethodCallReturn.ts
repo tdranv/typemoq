@@ -1,13 +1,16 @@
-﻿import * as all from "./_all";
-import { MockBase } from "./MockBase";
-import { InterceptorSetup } from "./InterceptorSetup";
-import { MethodCall } from "./MethodCall";
+﻿import * as all from './_all';
+import { MockBase } from './MockBase';
+import { InterceptorSetup } from './InterceptorSetup';
+import { MethodCall } from './MethodCall';
 
 export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> implements all.ISetup<T, TResult>, all.IReturnsResult<T> {
 
     protected _returnValueFunc: all.IFuncN<any, TResult>;
+
     hasReturnValue: boolean;
+
     protected _callBase: boolean;
+
     private readonly _overrideTarget: boolean;
 
     private constructor(
@@ -22,16 +25,16 @@ export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> impleme
     }
 
     static ofStaticMock<U, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
-        let interceptor = new InterceptorSetup<U>();
-        let proxy = all.ProxyFactory.createProxy<U>(mock.target, interceptor);
-        let result = new MethodCallReturn(mock, setupExpression, interceptor, proxy);
+        const interceptor = new InterceptorSetup<U>();
+        const proxy = all.ProxyFactory.createProxy<U>(mock.target, interceptor);
+        const result = new MethodCallReturn(mock, setupExpression, interceptor, proxy);
         return result;
     }
 
     static ofDynamicMock<U extends object, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
-        let interceptor = new InterceptorSetup<U>();
-        let proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
-        let result = new MethodCallReturn(mock, setupExpression, interceptor, proxy);
+        const interceptor = new InterceptorSetup<U>();
+        const proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
+        const result = new MethodCallReturn(mock, setupExpression, interceptor, proxy);
         return result;
     }
 
@@ -40,9 +43,9 @@ export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> impleme
     execute(call: all.ICallContext): void {
         super.execute(call);
 
-        if (this._callBase)
+        if (this._callBase) {
             call.invokeBase();
-        else if (this.hasReturnValue) {
+        } else if (this.hasReturnValue) {
             call.returnValue = this._returnValueFunc.apply(this, call.args);
             // help ProxyES6 identify value getter invocation at execution time
             call.property.desc = { value: this.setupCall.property.desc && this.setupCall.property.desc.value };
@@ -67,8 +70,8 @@ export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> impleme
 
         // override target
         if (this._overrideTarget) {
-            let obj: Object = this.mock.target;
-            let name: string = this.setupCall.property.name;
+            const obj: Object = this.mock.target;
+            const name: string = this.setupCall.property.name;
             let desc: all.PropDescriptor = this.setupCall.property.desc;
 
             if (!desc &&
@@ -78,14 +81,14 @@ export class MethodCallReturn<T, TResult> extends MethodCall<T, TResult> impleme
                 desc.configurable = true;
                 desc.enumerable = true;
 
-                if (this.setupCall.callType == all.CallType.FUNCTION)
+                if (this.setupCall.callType == all.CallType.FUNCTION) {
                     desc.value = this._returnValueFunc;
-                else
+                } else {
                     desc.get = this._returnValueFunc;
+                }
 
                 Object.defineProperty(obj, name, desc);
-            }
-            else if (desc) {
+            } else if (desc) {
                 desc.configurable = true;
                 desc.enumerable = true;
                 desc.value = this._returnValueFunc;

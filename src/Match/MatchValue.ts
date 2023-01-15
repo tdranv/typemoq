@@ -1,8 +1,8 @@
-﻿import isEqual from "lodash/isEqual";
-import cloneDeep from "lodash/cloneDeep";
-import { IMatch } from "./IMatch";
-import { Constants as Constants } from "../Consts";
-import { argsName } from "../Common/Utils";
+﻿import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
+import { IMatch } from './IMatch';
+import { Constants as Constants } from '../Consts';
+import { argsName } from '../Common/Utils';
 
 export class MatchValue<T = IArguments> implements IMatch {
 
@@ -19,7 +19,7 @@ export class MatchValue<T = IArguments> implements IMatch {
     }
 
     toString(): string {
-        let valueName = argsName(<any>[this._value]);
+        const valueName = argsName(<any>[this._value]);
         return valueName;
     }
 }

@@ -1,13 +1,13 @@
 ﻿export function someGlobalFunc() {
-    return "someGlobalFunc was called";
+    return 'someGlobalFunc was called';
 }
 
 export function someGlobalFuncWithArgs(a: any, b: any, c: any) {
-    return "someGlobalFuncWithArgs was called";
+    return 'someGlobalFuncWithArgs was called';
 }
 
 export class GlobalBar implements IGlobalBar {
-    value: string = "";
+    value: string = '';
 }
 
 export interface IGlobalBar {
@@ -16,11 +16,11 @@ export interface IGlobalBar {
 
 export module TestData {
     export function someFunc() {
-        return "someFunc was called";
+        return 'someFunc was called';
     }
 
     export function someFuncWithArgs(a: any, b: any, c: any) {
-        return "someFuncWithArgs was called";
+        return 'someFuncWithArgs was called';
     }
 
     export class CustomException implements Error {
@@ -39,9 +39,11 @@ export module TestData {
         get bar(): IBar {
             return this._bar;
         }
+
         do(stringValue: string) {
-            return "Foo.do:" + stringValue;
+            return 'Foo.do:' + stringValue;
         }
+
         setBar(value: string) {
             this._bar.value = value;
         }
@@ -69,8 +71,9 @@ export module TestData {
         get bar(): T {
             return this._bar;
         }
+
         do(stringValue: string) {
-            return "GenericFoo.do:" + stringValue + ": " + this._bar.toString();
+            return 'GenericFoo.do:' + stringValue + ': ' + this._bar.toString();
         }
     }
 
@@ -81,8 +84,10 @@ export module TestData {
     }
 
     export class Bar implements IBar {
-        value: string = "";
+        value: string = '';
+
         anyValue: any = undefined;
+
         enumValue: AnEnum;
     }
 
@@ -100,15 +105,19 @@ export module TestData {
 
     export class Doer implements IDo {
         doVoid(): void {}
+
         doNumber(n?: number): number {
             return n || 101;
         }
+
         doString(s?: string): string {
-            return s || "xyz";
+            return s || 'xyz';
         }
+
         doObject(o?: Object): Object {
             return o || new Object();
         }
+
         doBar(b?: Bar): Bar {
             return b;
         }
@@ -136,6 +145,7 @@ export module TestData {
         public get foo(): string {
             return this._foo;
         }
+
         public set foo(value: string) {
             this._foo = value;
         }
@@ -147,6 +157,7 @@ export module TestData {
         private get foo(): string {
             return this._foo;
         }
+
         private set foo(value: string) {
             this._foo = value;
         }
@@ -161,6 +172,7 @@ export module TestData {
         get stringValue(): string {
             return this._stringValue;
         }
+
         set stringValue(value: string) {
             this._stringValue = value;
         }
@@ -168,6 +180,7 @@ export module TestData {
         get numberValue(): number {
             return this._numberValue;
         }
+
         set numberValue(value: number) {
             this._numberValue = value;
         }
@@ -177,7 +190,9 @@ export module TestData {
         private _x: any;
 
         constructor(x: { stringValue: string; numberValue: number });
+
         constructor(x: number);
+
         constructor(x: any) {
             this._x = x;
         }
@@ -185,6 +200,7 @@ export module TestData {
         get x() {
             return this._x;
         }
+
         set x(value) {
             this._x = value;
         }
@@ -196,19 +212,19 @@ export module TestData {
 
     export class FooOverride extends Foo {
         do(stringValue: string) {
-            return "FooOverride.do: " + super.do(stringValue);
+            return 'FooOverride.do: ' + super.do(stringValue);
         }
     }
 
     export class GenericFooOverride<T> extends GenericFoo<T> {
         do(stringValue: string) {
-            return "GenericFooOverride.do: " + super.do(stringValue);
+            return 'GenericFooOverride.do: ' + super.do(stringValue);
         }
     }
 
     export class NumberFooOverride extends GenericFooOverride<Number> {
         do(stringValue: string) {
-            return "NumberFooOverride.do: " + super.do(stringValue);
+            return 'NumberFooOverride.do: ' + super.do(stringValue);
         }
     }
 
@@ -232,24 +248,32 @@ export module TestData {
 
     export class FooBase {
         static valueField: number;
+
         static do(value: number): void {}
+
         check(value: string): boolean {
             return true;
         }
+
         getIsProtected(): boolean {
             return this.isProtected();
         }
+
         isProtected(): boolean {
             return true;
         }
+
         true(): boolean {
             return true;
         }
+
         baseCalled: boolean = false;
+
         baseCall(value?: string): boolean {
             this.baseCalled = true;
             return this.baseCalled;
         }
+
         generic<T>(): number {
             return 0;
         }
@@ -278,6 +302,7 @@ export module TestData {
 
     export class Greeter {
         private static _instance: Greeter | null;
+
         static instance(): Greeter {
             if (!this._instance) {
                 this._instance = new Greeter();
@@ -286,12 +311,12 @@ export module TestData {
         }
 
         greet(): string {
-            return "Hello";
+            return 'Hello';
         }
     }
 
     export function doSomething(thing: IThing): string {
-        return thing.getA("asdf") + thing.getB(123);
+        return thing.getA('asdf') + thing.getB(123);
     }
 
     export interface OperationResult {
@@ -310,13 +335,14 @@ export module TestData {
             timeout: number
         ): Promise<T> {
             return new Promise((resolve, reject) => {
-                reject("Fail!");
+                reject('Fail!');
             });
         }
     }
 
     export class AnotherPromise {
         constructor(private myPromise: APromise) {}
+
         public doSomething(): Promise<OperationResult> {
             return this.myPromise.doOperation<OperationResult>(
                 () => {},
@@ -335,16 +361,21 @@ export module TestData {
             user?: string,
             password?: string
         ): void {}
+
         send(data?: Document): void;
+
         send(data?: string): void;
+
         send(data?: any): void {}
     }
 
     class LocalStorage {
         _store: any = {};
+
         getItem(key: string): any {
             return this._store[key];
         }
+
         setItem(key: string, data: string): void {
             this._store[key] = data;
         }

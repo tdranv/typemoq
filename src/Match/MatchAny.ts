@@ -1,8 +1,8 @@
-﻿import * as _ from "lodash";
-import * as common from "../Common/_all";
-import { IMatch } from "./IMatch";
-import { Constants } from "../Consts";
-import { functionName } from "../Common/_all";
+﻿import * as _ from 'lodash';
+import * as common from '../Common/_all';
+import { IMatch } from './IMatch';
+import { Constants } from '../Consts';
+import { functionName } from '../Common/_all';
 
 export class MatchAnyObject<T> implements IMatch {
 
@@ -13,13 +13,14 @@ export class MatchAnyObject<T> implements IMatch {
 
     ___matches(object: Object): boolean {
         let match = false;
-        if (object && object.constructor.prototype == this._ctor.prototype)
+        if (object && object.constructor.prototype == this._ctor.prototype) {
             match = true;
+        }
         return match;
     }
 
     toString(): string {
-        let res = `It.isAnyObject(${functionName(this._ctor)})`;
+        const res = `It.isAnyObject(${functionName(this._ctor)})`;
         return res;
     }
 }
@@ -29,7 +30,7 @@ export class MatchAny implements IMatch {
     readonly ___id = Constants.MATCH_VALUE_ID;
 
     ___matches(object: Object): boolean {
-        let match = true;
+        const match = true;
         return match;
     }
 
@@ -44,8 +45,9 @@ export class MatchAnyString implements IMatch {
 
     ___matches(object: Object): boolean {
         let match = false;
-        if (_.isString(object))
+        if (_.isString(object)) {
             match = true;
+        }
         return match;
     }
 
@@ -60,8 +62,9 @@ export class MatchAnyNumber implements IMatch {
 
     ___matches(object: Object): boolean {
         let match = false;
-        if (_.isNumber(object))
+        if (_.isNumber(object)) {
             match = true;
+        }
         return match;
     }
 

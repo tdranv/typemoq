@@ -1,20 +1,29 @@
-﻿import * as _ from "lodash";
-import * as all from "./_all";
-import { MockBase } from "./MockBase";
-import { InterceptorSetup } from "./InterceptorSetup";
-import { Constants } from "./Consts";
+﻿import * as _ from 'lodash';
+import * as all from './_all';
+import { MockBase } from './MockBase';
+import { InterceptorSetup } from './InterceptorSetup';
+import { Constants } from './Consts';
 
 export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies {
 
     protected _id: string;
+
     protected _setupCall: all.ICallContext;
+
     protected _setupCallback: all.IAction;
+
     protected _isVerifiable: boolean;
+
     protected _expectedCallCount: all.Times;
+
     protected _expectedCallType: all.ExpectedCallType;
+
     protected _isInvoked: boolean;
+
     protected _callCount: number = 0;
+
     protected _thrownException: Error;
+
     protected _evaluatedSuccessfully: boolean;
 
     protected constructor(
@@ -28,54 +37,51 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
         _setupExpression(proxy);
 
         if (interceptor.interceptedCall) {
-            let ic = interceptor.interceptedCall;
+            const ic = interceptor.interceptedCall;
 
-            let newArgs = this.transformToMatchers(ic.args);
-            Object.defineProperty(newArgs, "callee",
+            const newArgs = this.transformToMatchers(ic.args);
+            Object.defineProperty(newArgs, 'callee',
                 { configurable: true, enumerable: true, writable: false, value: ic.args.callee });
             ic.args = <IArguments><any>newArgs;
 
             this._setupCall = ic;
-        }
-        else {
+        } else {
             throw new all.MockException(all.MockExceptionReason.InvalidSetup,
                 this._setupExpression, `'${this._setupExpression}'`);
         }
     }
 
     static ofStaticMock<U, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
-        let interceptor = new InterceptorSetup<U>();
-        let proxy = all.ProxyFactory.createProxy<U>(mock.target, interceptor);
-        let result = new MethodCall(mock, setupExpression, interceptor, proxy);
+        const interceptor = new InterceptorSetup<U>();
+        const proxy = all.ProxyFactory.createProxy<U>(mock.target, interceptor);
+        const result = new MethodCall(mock, setupExpression, interceptor, proxy);
         return result;
     }
 
     static ofDynamicMock<U extends object, UResult>(mock: MockBase<U>, setupExpression: all.IFunc2<U, UResult>) {
-        let interceptor = new InterceptorSetup<U>();
-        let proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
-        let result = new MethodCall(mock, setupExpression, interceptor, proxy);
+        const interceptor = new InterceptorSetup<U>();
+        const proxy = all.ProxyFactory.createProxyES6<U>(mock.target, interceptor);
+        const result = new MethodCall(mock, setupExpression, interceptor, proxy);
         return result;
     }
 
     private generateId() {
-        return "MethodCall<" + _.uniqueId() + ">";
+        return 'MethodCall<' + _.uniqueId() + '>';
     }
 
     private transformToMatchers(args: IArguments): Array<all.IMatch> {
-        let newArgs: Array<all.IMatch> = [];
+        const newArgs: Array<all.IMatch> = [];
 
         _.each(args, (a: any) => {
             if (!_.isObject(a)) {
-                let newArg = new all.MatchValue(a);
+                const newArg = new all.MatchValue(a);
                 newArgs.push(newArg);
-            }
-            else {
+            } else {
                 if (all.Match.isMatcher(a)) {
                     newArgs.push(<all.IMatch>a);
-                }
-                else {
+                } else {
                     // assume strict equality, short form of It.is(x => _.isEqual(x, a))
-                    let newArg = new all.MatchPred(x => _.isEqual(x, a));
+                    const newArg = new all.MatchPred(x => _.isEqual(x, a));
                     newArgs.push(newArg);
                 }
             }
@@ -86,14 +92,37 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
 
     // IProxyCall
 
-    get id(): string { return this._id; }
-    get setupExpression(): all.IAction1<T> { return this._setupExpression; }
-    get setupCall(): all.ICallContext { return this._setupCall; }
-    get isVerifiable(): boolean { return this._isVerifiable; }
-    get isInSequence(): boolean { return this._expectedCallType === all.ExpectedCallType.InSequence; }
-    get expectedCallCount(): all.Times { return this._expectedCallCount; }
-    get isInvoked(): boolean { return this._isInvoked; }
-    get callCount(): number { return this._callCount; }
+    get id(): string {
+        return this._id; 
+    }
+
+    get setupExpression(): all.IAction1<T> {
+        return this._setupExpression; 
+    }
+
+    get setupCall(): all.ICallContext {
+        return this._setupCall; 
+    }
+
+    get isVerifiable(): boolean {
+        return this._isVerifiable; 
+    }
+
+    get isInSequence(): boolean {
+        return this._expectedCallType === all.ExpectedCallType.InSequence; 
+    }
+
+    get expectedCallCount(): all.Times {
+        return this._expectedCallCount; 
+    }
+
+    get isInvoked(): boolean {
+        return this._isInvoked; 
+    }
+
+    get callCount(): number {
+        return this._callCount; 
+    }
 
     setVerifiable(
         times: all.Times = all.Times.once(),
@@ -120,11 +149,12 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
                 if (!call.isAnUnknownDynamicCallAtExecution) {
 
                     _.each(this._setupCall.args, (x: any, index: number) => {
-                        let setupArg = <all.IMatch>x;
-                        let callArg = call.args[index];
+                        const setupArg = <all.IMatch>x;
+                        const callArg = call.args[index];
 
-                        if (match && !setupArg.___matches(callArg))
+                        if (match && !setupArg.___matches(callArg)) {
                             match = false;
+                        }
                     });
                 }
             }
@@ -157,7 +187,7 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
     }
 
     toString(): string {
-        let res = `${this.setupCall.property.name}`;
+        const res = `${this.setupCall.property.name}`;
         const args = this.setupCall.args;
         const expectedCallCount = this.expectedCallCount;
         if (expectedCallCount) {

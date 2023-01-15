@@ -1,5 +1,5 @@
-﻿import * as _ from "lodash";
-import { PropDescriptor } from "./PropDescriptor";
+﻿import * as _ from 'lodash';
+import { PropDescriptor } from './PropDescriptor';
 
 export class PropertyRetriever {
 
@@ -59,17 +59,17 @@ export class PropertyRetriever {
         obj: any, iterateSelfBool: boolean, iteratePrototypeBool: boolean, includePropCb: (obj: any, prop: any) => boolean):
         Array<{ name: string; desc: PropDescriptor }> {
 
-        let result: Array<{ name: string; desc: PropDescriptor }> = [];
+        const result: Array<{ name: string; desc: PropDescriptor }> = [];
 
         do {
             if (iterateSelfBool) {
 
-                let props = Object.getOwnPropertyNames(obj);
-                for (let prop of props) {
-                    let duplicate = _.find(result, (p: { name: string; desc: PropDescriptor }) => p.name === prop);
+                const props = Object.getOwnPropertyNames(obj);
+                for (const prop of props) {
+                    const duplicate = _.find(result, (p: { name: string; desc: PropDescriptor }) => p.name === prop);
 
                     if (!duplicate && includePropCb(obj, prop)) {
-                        let propDesc = Object.getOwnPropertyDescriptor(obj, prop);
+                        const propDesc = Object.getOwnPropertyDescriptor(obj, prop);
                         result.push({ name: prop, desc: propDesc });
                     }
                 };

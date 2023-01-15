@@ -1,2 +1,2 @@
-﻿export * from "./Exception";
-export * from "./MockException";
+﻿export * from './Exception';
+export * from './MockException';

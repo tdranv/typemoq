@@ -1,0 +1,78 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [],
+    "rules": {
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
+        "arrow-spacing": "error",
+        "comma-spacing": "error",
+        "key-spacing": [
+            "error",
+            {
+                "afterColon": true,
+                "beforeColon": false,
+                "mode": "strict"
+            }
+        ],
+        "keyword-spacing": "error",
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "semi-spacing": "error",
+        "semi": "error",
+        "quotes": [
+            "error",
+            "single",
+            {
+                "avoidEscape": true,
+                "allowTemplateLiterals": true
+            }
+        ],
+        "no-multiple-empty-lines": "error",
+        "lines-between-class-members": [
+            "error",
+            "always"
+        ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "curly": [
+            "error",
+            "all"
+        ],
+        "object-curly-newline": [
+            "error",
+            {
+                "multiline": true
+            }
+        ],
+        "no-multi-spaces": "error",
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "space-infix-ops": "error",
+        "brace-style": [
+            "error",
+            "1tbs",
+            {
+                "allowSingleLine": false
+            }
+        ],
+        "@typescript-eslint/indent": [
+            "warn",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ]
+    }
+}

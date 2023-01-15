@@ -1,6 +1,6 @@
-﻿import * as common from "../Common/_all";
-import { IMatch } from "./IMatch";
-import { Constants } from "../Consts";
+﻿import * as common from '../Common/_all';
+import { IMatch } from './IMatch';
+import { Constants } from '../Consts';
 
 export class MatchPred<T> implements IMatch {
 
@@ -11,13 +11,14 @@ export class MatchPred<T> implements IMatch {
 
     ___matches(object: Object): boolean {
         let match = false;
-        if (object && this._pred(<T>object))
+        if (object && this._pred(<T>object)) {
             match = true;
+        }
         return match;
     }
 
     toString(): string {
-        let res = `It.is(${this._pred})`;
+        const res = `It.is(${this._pred})`;
         return res;
     }
 }

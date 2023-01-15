@@ -1,7 +1,7 @@
-﻿import * as _ from "lodash";
-import * as common from "../Common/_all";
-import { objectName } from "../Common/_all";
-import { ICallContext, CallType, ProxyType } from "./ICallContext";
+﻿import * as _ from 'lodash';
+import * as common from '../Common/_all';
+import { objectName } from '../Common/_all';
+import { ICallContext, CallType, ProxyType } from './ICallContext';
 
 export enum InvocationType {
     NONE, SETUP, EXECUTE
@@ -9,12 +9,14 @@ export enum InvocationType {
 
 export abstract class BaseInvocation implements ICallContext {
     returnValue: any;
+
     invocationType = InvocationType.NONE;
 
     constructor(public readonly proxyType: ProxyType, public callType: CallType) {
     }
 
     abstract get args(): IArguments;
+
     abstract set args(value: IArguments);
 
     abstract get property(): IPropertyInfo;
@@ -47,17 +49,25 @@ export class MethodInvocation extends BaseInvocation {
         }
     }
 
-    get args(): IArguments { return this._args || <any>{ length: 0, callee: null }; }
-    set args(value: IArguments) { this._args = value; }
+    get args(): IArguments {
+        return this._args || <any>{ length: 0, callee: null }; 
+    }
 
-    get property(): IPropertyInfo { return this._property; }
+    set args(value: IArguments) {
+        this._args = value; 
+    }
+
+    get property(): IPropertyInfo {
+        return this._property; 
+    }
 
     invokeBase(): void {
         let thatClone = {};
-        if (this._that)
+        if (this._that) {
             common.Utils.clone(thatClone, this._that);
-        else
+        } else {
             thatClone = this._property.obj;
+        }
         this.returnValue = this._property.toFunc.apply(thatClone, this._args);
     }
 
@@ -80,17 +90,20 @@ export class ValueGetterInvocation extends BaseInvocation {
     }
 
     get args(): IArguments {
-        let args: any[] = [];
-        Object.defineProperty(args, "callee",
+        const args: any[] = [];
+        Object.defineProperty(args, 'callee',
             { configurable: true, enumerable: true, writable: false, value: null });
         return <any>args;
     }
+
     set args(value: IArguments) { }
 
-    get property(): IPropertyInfo { return this._property; }
+    get property(): IPropertyInfo {
+        return this._property; 
+    }
 
     invokeBase(): void {
-        this.returnValue = (<any>this._property.obj)[this._property.name];
+        this.returnValue = (<any> this._property.obj)[this._property.name];
     }
 
     toString(): string {
@@ -126,14 +139,21 @@ export class ValueSetterInvocation extends BaseInvocation {
         // this._args.callee = args.callee;
     }
 
-    get args(): IArguments { return this._args; }
-    set args(value: IArguments) { this._args = value; }
+    get args(): IArguments {
+        return this._args; 
+    }
 
-    get property(): IPropertyInfo { return this._property; }
+    set args(value: IArguments) {
+        this._args = value; 
+    }
+
+    get property(): IPropertyInfo {
+        return this._property; 
+    }
 
     invokeBase(): void {
-        (<any>this._property.obj)[this._property.name] = this._args[0];
-        this.returnValue = (<any>this._property.obj)[this._property.name];
+        (<any> this._property.obj)[this._property.name] = this._args[0];
+        this.returnValue = (<any> this._property.obj)[this._property.name];
     }
 
     toString(): string {
@@ -153,17 +173,20 @@ export class MethodGetterInvocation extends BaseInvocation {
     }
 
     get args(): IArguments {
-        let args: any[] = [];
-        Object.defineProperty(args, "callee",
+        const args: any[] = [];
+        Object.defineProperty(args, 'callee',
             { configurable: true, enumerable: true, writable: false, value: null });
         return <any>args;
     }
+
     set args(value: IArguments) { }
 
-    get property(): IPropertyInfo { return this._property; }
+    get property(): IPropertyInfo {
+        return this._property; 
+    }
 
     invokeBase(): void {
-        this.returnValue = (<any>this._property.obj)[this._property.name];
+        this.returnValue = (<any> this._property.obj)[this._property.name];
     }
 
     toString(): string {
@@ -189,14 +212,21 @@ export class MethodSetterInvocation extends BaseInvocation {
         this._args.callee = args.callee;
     }
 
-    get args(): IArguments { return this._args; }
-    set args(value: IArguments) { this._args = value; }
+    get args(): IArguments {
+        return this._args; 
+    }
 
-    get property(): IPropertyInfo { return this._property; }
+    set args(value: IArguments) {
+        this._args = value; 
+    }
+
+    get property(): IPropertyInfo {
+        return this._property; 
+    }
 
     invokeBase(): void {
-        (<any>this._property.obj)[this._property.name] = this._args[0];
-        this.returnValue = (<any>this._property.obj)[this._property.name];
+        (<any> this._property.obj)[this._property.name] = this._args[0];
+        this.returnValue = (<any> this._property.obj)[this._property.name];
     }
 
     toString(): string {
@@ -213,12 +243,13 @@ export class MethodInfo implements IPropertyInfo {
         public readonly name: string,
         desc?: common.PropDescriptor) {
 
-        if (desc)
+        if (desc) {
             this.desc = _.cloneDeep(desc);
+        }
     }
 
     get toFunc(): Function {
-        const func = _.isFunction(this.obj) ? <Function>this.obj : <Function>this.obj[this.name];
+        const func = _.isFunction(this.obj) ? <Function> this.obj : <Function> this.obj[this.name];
         return func;
     }
 
@@ -237,8 +268,9 @@ export class PropertyInfo implements IPropertyInfo {
         public readonly name: string,
         desc?: common.PropDescriptor) {
 
-        if (desc)
+        if (desc) {
             this.desc = _.cloneDeep(desc);
+        }
     }
 
     toString(): string {

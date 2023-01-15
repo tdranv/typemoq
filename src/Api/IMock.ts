@@ -1,7 +1,7 @@
-﻿import * as common from "../Common/_all";
-import { MethodCallReturn } from "../MethodCallReturn";
-import { MockBehavior } from "./MockBehavior";
-import { Times } from "./Times";
+﻿import * as common from '../Common/_all';
+import { MethodCallReturn } from '../MethodCallReturn';
+import { MockBehavior } from './MockBehavior';
+import { Times } from './Times';
 
 export interface IMock<T> {
     readonly object: T;

@@ -1,43 +1,43 @@
-﻿import * as _ from "lodash";
-import * as common from "../Common/_all";
-import * as error from "../Error/_all";
-import { Constants } from "../Consts";
-import { IProxy } from "./IProxy";
-import { ICallContext } from "./ICallContext";
-import { ICallInterceptor } from "./ICallInterceptor";
-import { PropertyInfo, MethodInfo, MethodInvocation, MethodGetterInvocation, MethodSetterInvocation, ValueGetterInvocation, ValueSetterInvocation } from "./Invocation";
-import { functionName } from "../Common/_all";
+﻿import * as _ from 'lodash';
+import * as common from '../Common/_all';
+import * as error from '../Error/_all';
+import { Constants } from '../Consts';
+import { IProxy } from './IProxy';
+import { ICallContext } from './ICallContext';
+import { ICallInterceptor } from './ICallInterceptor';
+import { PropertyInfo, MethodInfo, MethodInvocation, MethodGetterInvocation, MethodSetterInvocation, ValueGetterInvocation, ValueSetterInvocation } from './Invocation';
+import { functionName } from '../Common/_all';
 
 export class ProxyES5<T> implements IProxy {
 
-    readonly ___id = Constants.IPROXY_ID_VALUE;
+    readonly ___id = Constants.PROXY_VALUE_ID;
 
     private constructor(target: T, interceptor: ICallInterceptor) {
         this.check(target);
-        let that = this;
+        const that = this;
 
-        let props = common.PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(target);
+        const props = common.PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(target);
         _.each(props, (prop: { name: string; desc: common.PropDescriptor }) => {
 
             if (_.isFunction(prop.desc.value)) {
-                let propDesc: common.PropDescriptor = {
+                const propDesc: common.PropDescriptor = {
                     configurable: prop.desc.configurable,
                     enumerable: prop.desc.enumerable,
-                    writable: prop.desc.writable
+                    writable: prop.desc.writable,
                 };
 
                 this.defineMethodProxy(that, interceptor, target, prop.name, propDesc);
-            }
-            else {
-                let propDesc: common.PropDescriptor = {
+            } else {
+                const propDesc: common.PropDescriptor = {
                     configurable: prop.desc.configurable,
-                    enumerable: prop.desc.enumerable
+                    enumerable: prop.desc.enumerable,
                 };
 
-                if (prop.desc.value !== undefined)
+                if (prop.desc.value !== undefined) {
                     this.defineValuePropertyProxy(that, interceptor, target, prop.name, prop.desc.value, propDesc);
-                else
+                } else {
                     this.defineGetSetPropertyProxy(that, interceptor, target, prop.name, prop.desc.get, prop.desc.set, propDesc);
+                }
             }
 
         });
@@ -49,10 +49,9 @@ export class ProxyES5<T> implements IProxy {
         let result: any;
 
         if (_.isFunction(target)) {
-            let funcName = functionName(target);
+            const funcName = functionName(target);
             result = ProxyES5.methodProxyValue(undefined, interceptor, target, funcName, null);
-        }
-        else {
+        } else {
             result = new ProxyES5(target, interceptor);
         }
 
@@ -61,10 +60,11 @@ export class ProxyES5<T> implements IProxy {
 
     static isProxy(obj: any): boolean {
         if (!_.isNil(obj) &&
-            !_.isUndefined(obj[Constants.IPROXY_ID_NAME]) && obj[Constants.IPROXY_ID_NAME] === Constants.IPROXY_ID_VALUE)
+            !_.isUndefined(obj[Constants.PROXY_NAME_ID]) && obj[Constants.PROXY_NAME_ID] === Constants.PROXY_VALUE_ID) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     private static check<U>(target: U): void {
@@ -73,12 +73,14 @@ export class ProxyES5<T> implements IProxy {
         // allow only primitive objects and functions
         let ok = false;
         if (_.isFunction(target) ||
-            (_.isObject(target) && !ProxyES5.isPrimitiveObject(target)))
+            (_.isObject(target) && !ProxyES5.isPrimitiveObject(target))) {
             ok = true;
+        }
 
-        if (!ok)
+        if (!ok) {
             throw new error.MockException(error.MockExceptionReason.InvalidArg,
                 target, `'${target}'; proxy argument should be a function or a non primitive object`);
+        }
     }
 
     private check<U>(target: U): void {
@@ -87,18 +89,21 @@ export class ProxyES5<T> implements IProxy {
         // allow only non primitive objects
         let ok = false;
         if (!_.isFunction(target) &&
-            (_.isObject(target) && !ProxyES5.isPrimitiveObject(target)))
+            (_.isObject(target) && !ProxyES5.isPrimitiveObject(target))) {
             ok = true;
+        }
 
-        if (!ok)
+        if (!ok) {
             throw new error.MockException(error.MockExceptionReason.InvalidArg,
                 target, `'${target}'; proxy argument should be a non primitive object`);
+        }
     }
 
     private static checkNotNullOrUndefined<U>(instance: U): void {
-        if (_.isNil(instance))
+        if (_.isNil(instance)) {
             throw new error.MockException(error.MockExceptionReason.InvalidArg,
                 instance, `'${instance}'; proxy argument is required`);
+        }
     }
 
     private static isPrimitiveObject(obj: Object): boolean {
@@ -107,8 +112,9 @@ export class ProxyES5<T> implements IProxy {
         if (_.isFunction(obj) ||
             _.isArray(obj) ||
             _.isDate(obj) ||
-            _.isNull(obj))
+            _.isNull(obj)) {
             result = true;
+        }
 
         return result;
     }
@@ -133,8 +139,8 @@ export class ProxyES5<T> implements IProxy {
         propDesc: common.PropDescriptor): () => any {
 
         function proxy() {
-            let method = new MethodInfo(target, propName, propDesc);
-            let invocation: ICallContext = new MethodInvocation(that, method, arguments);
+            const method = new MethodInfo(target, propName, propDesc);
+            const invocation: ICallContext = new MethodInvocation(that, method, arguments);
             interceptor.intercept(invocation);
             return invocation.returnValue;
         }
@@ -150,16 +156,16 @@ export class ProxyES5<T> implements IProxy {
         propDesc: common.PropDescriptor = { configurable: true, enumerable: true }) {
 
         function getProxy(): any {
-            let method = new PropertyInfo(target, propName);
-            let invocation: ICallContext = new ValueGetterInvocation(method, propValue);
+            const method = new PropertyInfo(target, propName);
+            const invocation: ICallContext = new ValueGetterInvocation(method, propValue);
             interceptor.intercept(invocation);
             return invocation.returnValue;
         }
         propDesc.get = getProxy;
 
         function setProxy(v: any): void {
-            let method = new PropertyInfo(target, propName);
-            let invocation: ICallContext = new ValueSetterInvocation(method, arguments);
+            const method = new PropertyInfo(target, propName);
+            const invocation: ICallContext = new ValueSetterInvocation(method, arguments);
             interceptor.intercept(invocation);
         }
         propDesc.set = setProxy;
@@ -177,16 +183,16 @@ export class ProxyES5<T> implements IProxy {
         propDesc: common.PropDescriptor = { configurable: true, enumerable: true }) {
 
         function getProxy(): any {
-            let method = new PropertyInfo(target, propName);
-            let invocation: ICallContext = new MethodGetterInvocation(method, get);
+            const method = new PropertyInfo(target, propName);
+            const invocation: ICallContext = new MethodGetterInvocation(method, get);
             interceptor.intercept(invocation);
             return invocation.returnValue;
         }
         propDesc.get = getProxy;
 
         function setProxy(v: any): void {
-            let method = new PropertyInfo(target, propName);
-            let invocation: ICallContext = new MethodSetterInvocation(method, set, arguments);
+            const method = new PropertyInfo(target, propName);
+            const invocation: ICallContext = new MethodSetterInvocation(method, set, arguments);
             interceptor.intercept(invocation);
         }
         propDesc.set = setProxy;
@@ -197,8 +203,7 @@ export class ProxyES5<T> implements IProxy {
     private defineProperty(obj: Object, name: string, desc: common.PropDescriptor) {
         try {
             Object.defineProperty(obj, name, desc);
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e.message);
         }
     }

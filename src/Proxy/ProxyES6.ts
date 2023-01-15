@@ -1,14 +1,14 @@
-﻿import * as error from "../Error/_all";
-import { Constants } from "../Consts";
-import { IProxy } from "./IProxy";
-import { IProxyHandler, PropKey } from "./IProxyHandler";
+﻿import * as error from '../Error/_all';
+import { Constants } from '../Consts';
+import { IProxy } from './IProxy';
+import { IProxyHandler, PropKey } from './IProxyHandler';
 
 export class ProxyES6<T extends object> implements IProxy {
 
-    readonly ___id = Constants.IPROXY_ID_VALUE;
+    readonly ___id = Constants.PROXY_VALUE_ID;
 
     private constructor(target: T, handler: IProxyHandler<T>) {
-        const p = <ProxyES6<T>>new Proxy(target, handler);
+        const p = <ProxyES6<T>> new Proxy(target, handler);
         (<any>p)[Symbol.toStringTag] = Function.prototype.toString.bind(target);
         return p;
     }
@@ -20,8 +20,9 @@ export class ProxyES6<T extends object> implements IProxy {
     }
 
     private static check(): void {
-        if (typeof Proxy === "undefined")
+        if (typeof Proxy === 'undefined') {
             throw new error.MockException(error.MockExceptionReason.InvalidDynamicProxyRuntime,
-                null, "ES6 Proxy object not detected; the dynamic mocking feature requires ES6 Proxy object support");
+                null, 'ES6 Proxy object not detected; the dynamic mocking feature requires ES6 Proxy object support');
+        }
     }
 }

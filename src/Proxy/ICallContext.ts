@@ -1,4 +1,4 @@
-﻿import { IPropertyInfo, InvocationType } from "./Invocation";
+﻿import { IPropertyInfo, InvocationType } from './Invocation';
 
 export enum CallType {
     UNKNOWN, PROPERTY, FUNCTION

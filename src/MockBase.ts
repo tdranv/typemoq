@@ -1,16 +1,20 @@
-﻿import * as _ from "lodash";
-import * as all from "./_all";
-import { InterceptorExecute } from "./InterceptorExecute";
-import { MethodCall } from "./MethodCall";
-import { MethodCallReturn } from "./MethodCallReturn";
-import { functionName } from "./_all";
+﻿import * as _ from 'lodash';
+import * as all from './_all';
+import { InterceptorExecute } from './InterceptorExecute';
+import { MethodCall } from './MethodCall';
+import { MethodCallReturn } from './MethodCallReturn';
+import { functionName } from './_all';
 
 export abstract class MockBase<T> implements all.IMock<T> {
 
     private _id: string;
+
     protected _name: string;
+
     protected _interceptor: InterceptorExecute<T>;
+
     protected _proxy: T;
+
     private _callBase: boolean;
 
     constructor(
@@ -22,14 +26,24 @@ export abstract class MockBase<T> implements all.IMock<T> {
         this._name = this.getNameOf(this.target);
     }
 
-    get object() { return this._proxy; }
-    get name() { return this._name; }
+    get object() {
+        return this._proxy; 
+    }
 
-    get callBase() { return this._callBase; }
-    set callBase(value: boolean) { this._callBase = value; }
+    get name() {
+        return this._name; 
+    }
+
+    get callBase() {
+        return this._callBase; 
+    }
+
+    set callBase(value: boolean) {
+        this._callBase = value; 
+    }
 
     private generateId() {
-        return "Mock<" + _.uniqueId() + ">";
+        return 'Mock<' + _.uniqueId() + '>';
     }
 
     private getNameOf(instance: T): string {
@@ -37,14 +51,14 @@ export abstract class MockBase<T> implements all.IMock<T> {
 
         if (_.isFunction(instance)) {
             result = functionName(instance);
-        }
-        else if (_.isObject(instance)) {
-            let ctor = instance.constructor;
+        } else if (_.isObject(instance)) {
+            const ctor = instance.constructor;
             result = functionName(ctor);
         }
 
-        if (result)
+        if (result) {
             result = result.trim();
+        }
 
         return result;
     }
@@ -60,8 +74,7 @@ export abstract class MockBase<T> implements all.IMock<T> {
     verifyAll(): void {
         try {
             this._interceptor.verify();
-        }
-        catch (e) {
+        } catch (e) {
             throw e;
         }
     }

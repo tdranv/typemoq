@@ -1,7 +1,7 @@
-﻿import * as _ from "lodash";
-import { IMatch } from "./IMatch";
-import { Constants } from "../Consts";
-import { argsName } from "../Common/Utils";
+﻿import * as _ from 'lodash';
+import { IMatch } from './IMatch';
+import { Constants } from '../Consts';
+import { argsName } from '../Common/Utils';
 
 export class MatchObjectWith<T> implements IMatch {
 
@@ -15,15 +15,16 @@ export class MatchObjectWith<T> implements IMatch {
 
     ___matches(object: Object): boolean {
         let match = false;
-        let partial = _.pick(object, _.keys(this._value));
-        if (_.isEqual(this._value, partial))
+        const partial = _.pick(object, _.keys(this._value));
+        if (_.isEqual(this._value, partial)) {
             match = true;
+        }
         return match;
     }
 
     toString(): string {
-        let valueName = argsName(<any>[this._value]);
-        let res = `It.isObjectWith(${valueName})`;
+        const valueName = argsName(<any>[this._value]);
+        const res = `It.isObjectWith(${valueName})`;
         return res;
     }
 }

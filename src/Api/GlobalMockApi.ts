@@ -1,11 +1,11 @@
-﻿import * as _ from "lodash";
-import * as common from "../Common/_all";
-import { MockBehavior } from "./MockBehavior";
-import { IMock } from "./IMock";
-import { StaticMock } from "../StaticMock";
-import { IGlobalMock } from "./IGlobalMock";
-import { GlobalMock as GMock, GlobalType } from "../GlobalMock";
-import { DynamicMock } from "../DynamicMock";
+﻿import * as _ from 'lodash';
+import * as common from '../Common/_all';
+import { MockBehavior } from './MockBehavior';
+import { IMock } from './IMock';
+import { StaticMock } from '../StaticMock';
+import { IGlobalMock } from './IGlobalMock';
+import { GlobalMock as GMock, GlobalType } from '../GlobalMock';
+import { DynamicMock } from '../DynamicMock';
 
 export class GlobalMockApi {
 

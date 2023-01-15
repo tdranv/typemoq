@@ -5,7 +5,7 @@
     }
 
     toString(): string {
-        let errMsg = this.message ? `${this.name} - ${this.message}` : this.name;
+        const errMsg = this.message ? `${this.name} - ${this.message}` : this.name;
         return errMsg;
     }
 }

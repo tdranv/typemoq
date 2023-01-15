@@ -1,9 +1,9 @@
-import * as all from "./_all";
-import { MockBase } from "./MockBase";
-import { MockBehavior } from "./_all";
-import { InterceptorExecute } from "./InterceptorExecute";
-import { MethodCall } from "./MethodCall";
-import { MethodCallReturn } from "./MethodCallReturn";
+import * as all from './_all';
+import { MockBase } from './MockBase';
+import { MockBehavior } from './_all';
+import { InterceptorExecute } from './InterceptorExecute';
+import { MethodCall } from './MethodCall';
+import { MethodCallReturn } from './MethodCallReturn';
 
 export class DynamicMock<T extends object> extends MockBase<T> {
 
@@ -11,21 +11,20 @@ export class DynamicMock<T extends object> extends MockBase<T> {
         target: T,
         name: string,
         canOverrideTarget: boolean,
-        behavior: all.MockBehavior) {
+        behavior: all.MockBehavior
+    ) {
 
         super(target, canOverrideTarget, behavior);
 
-        if (name)
+        if (name) {
             this._name = name;
+        }
 
         this._interceptor = new InterceptorExecute(this);
         this._proxy = all.ProxyFactory.createProxyES6<T>(target, this._interceptor);
     }
 
-    static ofType<U>(name: string, behavior: all.MockBehavior, shouldOverrideTarget: boolean): all.IMock<U> {
-        const mock: DynamicMock<U> = new DynamicMock<U>(<any>(() => { }), name, shouldOverrideTarget, behavior);
-        return mock;
-    }
+    static ofType = <U extends object>(name: string, behavior: all.MockBehavior, shouldOverrideTarget: boolean): all.IMock<U> => new DynamicMock<U>(<any>(() => { }), name, shouldOverrideTarget, behavior);
 
     // setup
 
@@ -42,8 +41,7 @@ export class DynamicMock<T extends object> extends MockBase<T> {
         this._interceptor.addExpectedCall(call);
         try {
             this._interceptor.verifyCallCount(call, times);
-        }
-        catch (e) {
+        } catch (e) {
             throw e;
         }
     }

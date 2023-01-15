@@ -1,6 +1,6 @@
-﻿import * as common from "../Common/_all";
-import * as api from "../Api/_all";
-import { ICallContext } from "./ICallContext";
+﻿import * as common from '../Common/_all';
+import * as api from '../Api/_all';
+import { ICallContext } from './ICallContext';
 
 export interface IProxyCall<T> {
     id: string;

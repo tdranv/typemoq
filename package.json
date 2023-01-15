@@ -30,7 +30,8 @@
   "scripts": {
     "prepare": "pnpm build",
     "build": "tsup src/typemoq.ts --format cjs,esm --dts",
-    "lint": "tsc",
+    "lint": "tsc && eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "test": "jest"
   },
   "dependencies": {
@@ -45,8 +46,11 @@
     "@types/lodash": "4.14.189",
     "@types/mocha": "10.0.0",
     "@types/node": "18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
     "del": "7.0.0",
     "dts-bundle": "0.7.3",
+    "eslint": "^8.32.0",
     "merge2": "1.4.1",
     "mocha": "10.1.0",
     "run-sequence": "2.2.1",

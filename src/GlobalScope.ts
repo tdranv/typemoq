@@ -1,6 +1,6 @@
-﻿import * as _ from "lodash";
-import * as all from "./_all";
-import { GlobalType } from "./GlobalMock";
+﻿import * as _ from 'lodash';
+import * as all from './_all';
+import { GlobalType } from './GlobalMock';
 
 export class GlobalScope implements all.IUsingResult {
 
@@ -8,18 +8,18 @@ export class GlobalScope implements all.IUsingResult {
     }
 
     with(action: all.IAction): void {
-        let initial: all.PropDescriptorMap = {};
+        const initial: all.PropDescriptorMap = {};
 
         try {
             _.each(this._args, (a: all.IGlobalMock<any>) => {
-                let containerProps = all.PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(a.container);
-                let prop = _.find(containerProps, (p: { name: string; desc: all.PropDescriptor }) => p.name === a.name);
+                const containerProps = all.PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(a.container);
+                const prop = _.find(containerProps, (p: { name: string; desc: all.PropDescriptor }) => p.name === a.name);
 
                 if (prop) {
 
                     initial[a.name] = prop.desc;
 
-                    let desc: all.PropDescriptor = {};
+                    const desc: all.PropDescriptor = {};
 
                     switch (a.type) {
 
@@ -56,32 +56,32 @@ export class GlobalScope implements all.IUsingResult {
             console.log(`2: ${e}`);
         } finally {
             _.each(this._args, (a: all.IGlobalMock<any>) => {
-                    let desc: all.PropDescriptor = initial[a.name];
+                const desc: all.PropDescriptor = initial[a.name];
 
-                    if (desc) {
+                if (desc) {
 
-                        switch (a.type) {
+                    switch (a.type) {
 
-                            case GlobalType.Class:
-                                break;
+                        case GlobalType.Class:
+                            break;
 
-                            case GlobalType.Function:
-                                break;
+                        case GlobalType.Function:
+                            break;
 
-                            case GlobalType.Value:
-                                desc.configurable = true;
-                                break;
+                        case GlobalType.Value:
+                            desc.configurable = true;
+                            break;
 
-                            default:
-                        }
-
-                        try {
-                            Object.defineProperty(a.container, a.name, desc);
-                        } catch (e) {
-                            console.log(`3: ${e}`);
-                        }
+                        default:
                     }
-                });
+
+                    try {
+                        Object.defineProperty(a.container, a.name, desc);
+                    } catch (e) {
+                        console.log(`3: ${e}`);
+                    }
+                }
+            });
         }
     }
 }

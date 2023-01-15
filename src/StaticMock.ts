@@ -1,11 +1,11 @@
-﻿import * as _ from "lodash";
-import * as all from "./_all";
-import { MockBase } from "./MockBase";
-import { MockBehavior } from "./_all";
-import { InterceptorExecute } from "./InterceptorExecute";
-import { MethodCall } from "./MethodCall";
-import { MethodCallReturn } from "./MethodCallReturn";
-import { threadId } from "worker_threads";
+﻿import * as _ from 'lodash';
+import * as all from './_all';
+import { MockBase } from './MockBase';
+import { MockBehavior } from './_all';
+import { InterceptorExecute } from './InterceptorExecute';
+import { MethodCall } from './MethodCall';
+import { MethodCallReturn } from './MethodCallReturn';
+import { threadId } from 'worker_threads';
 
 export class StaticMock<T> extends MockBase<T> {
     private constructor(
@@ -69,9 +69,11 @@ export class StaticMock<T> extends MockBase<T> {
     private static cloneDeep<T>(target: T): T {
         let copy = target;
         if (!_.isFunction(target)) {
-            let func = (x: any): any => {
-                var value: any;
-                if (all.ProxyES5.isProxy(x)) return x;
+            const func = (x: any): any => {
+                let value: any;
+                if (all.ProxyES5.isProxy(x)) {
+                    return x;
+                }
             };
             copy = _.cloneDeepWith(target, func);
         }
