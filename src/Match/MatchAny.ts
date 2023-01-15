@@ -1,11 +1,12 @@
 ﻿import * as _ from "lodash";
 import * as common from "../Common/_all";
 import { IMatch } from "./IMatch";
-import { Consts } from "../Consts";
+import { Constants } from "../Consts";
+import { functionName } from "../Common/_all";
 
 export class MatchAnyObject<T> implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     constructor(private readonly _ctor: common.Ctor<T>) {
     }
@@ -18,14 +19,14 @@ export class MatchAnyObject<T> implements IMatch {
     }
 
     toString(): string {
-        let res = `It.isAnyObject(${common.Utils.functionName(this._ctor)})`;
+        let res = `It.isAnyObject(${functionName(this._ctor)})`;
         return res;
     }
 }
 
 export class MatchAny implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     ___matches(object: Object): boolean {
         let match = true;
@@ -33,13 +34,13 @@ export class MatchAny implements IMatch {
     }
 
     toString(): string {
-        return `It.isAny()`;
+        return `any`;
     }
 }
 
 export class MatchAnyString implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     ___matches(object: Object): boolean {
         let match = false;
@@ -55,7 +56,7 @@ export class MatchAnyString implements IMatch {
 
 export class MatchAnyNumber implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     ___matches(object: Object): boolean {
         let match = false;

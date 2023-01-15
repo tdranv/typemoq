@@ -64,13 +64,22 @@ export class InterceptorExecute<T> implements all.ICallInterceptor {
             this.throwVerifyCallCountException(call.setupCall, times, expectedCalls, actualCalls);
     }
 
-    private throwVerifyCallCountException(setupCall: all.ICallContext, times: all.Times,
-        expectedCalls: Array<all.IProxyCall<T>>, actualCalls: Array<all.ICallContext>) {
+    private throwVerifyCallCountException(
+        setupCall: all.ICallContext, times: all.Times,
+        expectedCalls: Array<all.IProxyCall<T>>,
+        actualCalls: Array<all.ICallContext>
+    ) {
 
         let failMsg = times.failMessage(setupCall);
         let expectedCallsMsg = expectedCalls.reduce((a, x) => `${a} ${x}\n`, "");
         let actualCallsMsg = actualCalls.reduce((a, x) => `${a} ${x}\n`, "");
-        let msg = `${failMsg}\n Configured setups:\n${expectedCallsMsg}\n Performed invocations:\n${actualCallsMsg}`;
+        const msg = [
+            failMsg,
+            'Configured setups',
+            expectedCallsMsg,
+            'Performed invocations',
+            actualCallsMsg
+        ].join('\n')
 
         let e = new all.MockException(all.MockExceptionReason.CallCountVerificationFailed, setupCall, msg);
         throw e;

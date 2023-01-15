@@ -1,13 +1,13 @@
 import * as _ from "lodash";
-import { Consts } from "../Consts";
+import { Constants } from "../Consts";
 
 export class Match {
 
     static isMatcher(x: any): boolean {
         return !_.isNil(x) &&
-            !_.isUndefined(x[Consts.IMATCH_MATCHES_NAME]) &&
-            !_.isUndefined(x[Consts.IMATCH_ID_NAME]) &&
-            x[Consts.IMATCH_ID_NAME] === Consts.IMATCH_ID_VALUE;
+            !_.isUndefined(x[Constants.IMATCH_MATCHES_NAME]) &&
+            !_.isUndefined(x[Constants.IMATCH_ID_NAME]) &&
+            x[Constants.IMATCH_ID_NAME] === Constants.MATCH_VALUE_ID;
     }
 
 }

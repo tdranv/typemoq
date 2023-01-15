@@ -2,7 +2,7 @@
 import * as all from "./_all";
 import { MockBase } from "./MockBase";
 import { InterceptorSetup } from "./InterceptorSetup";
-import { Consts } from "./Consts";
+import { Constants } from "./Consts";
 
 export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies {
 
@@ -157,9 +157,24 @@ export class MethodCall<T, TResult> implements all.IProxyCall<T>, all.IVerifies 
     }
 
     toString(): string {
-        let res = `${this.setupCall}`;
-        if (this.expectedCallCount)
-            res = `${res}, ${this.expectedCallCount}`;
+        let res = `${this.setupCall.property.name}`;
+        const args = this.setupCall.args;
+        const expectedCallCount = this.expectedCallCount;
+        if (expectedCallCount) {
+            if (expectedCallCount.toString() === 'never') {
+                return [
+                    res,
+                    '(',
+                    [...args].join(', '),
+                    ')',
+                    ' to never be called'
+                ].join('');
+            }
+            return [
+                res,
+                `to be called ${expectedCallCount.toString()} times`
+            ].join(' ');
+        }
         return res;
     }
 

@@ -1,5 +1,6 @@
 ﻿import * as _ from "lodash";
 import * as common from "../Common/_all";
+import { objectName } from "../Common/_all";
 import { ICallContext, CallType, ProxyType } from "./ICallContext";
 
 export enum InvocationType {
@@ -61,7 +62,7 @@ export class MethodInvocation extends BaseInvocation {
     }
 
     toString(): string {
-        const res = `${this.property}(${common.Utils.argsName(this.args)})`;
+        const res = `${this.property.name}(${common.argsName(this.args)})`;
         return res;
     }
 }
@@ -136,7 +137,7 @@ export class ValueSetterInvocation extends BaseInvocation {
     }
 
     toString(): string {
-        const res = `${this.property} = ${common.Utils.argsName(this.args[0])}`;
+        const res = `${this.property} = ${common.argsName(this.args[0])}`;
         return res;
     }
 }
@@ -199,7 +200,7 @@ export class MethodSetterInvocation extends BaseInvocation {
     }
 
     toString(): string {
-        const res = `${this.property}(${common.Utils.argsName(this.args[0])})`;
+        const res = `${this.property}(${common.argsName(this.args[0])})`;
         return res;
     }
 }
@@ -222,7 +223,7 @@ export class MethodInfo implements IPropertyInfo {
     }
 
     toString(): string {
-        const objName = common.Utils.objectName(this.obj);
+        const objName = objectName(this.obj);
         const res = _.isFunction(this.obj) ? `${objName}` : `${objName}.${this.name}`;
         return res;
     }
@@ -241,7 +242,7 @@ export class PropertyInfo implements IPropertyInfo {
     }
 
     toString(): string {
-        const objName = common.Utils.objectName(this.obj);
+        const objName = objectName(this.obj);
         const res = `${objName}.${this.name}`;
         return res;
     }

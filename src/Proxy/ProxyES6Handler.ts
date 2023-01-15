@@ -1,17 +1,18 @@
 import * as common from "../Common/_all";
+import { functionName } from "../Common/_all";
 import { ICallContext, ProxyType, CallType } from "./ICallContext";
 import { ICallInterceptor } from "./ICallInterceptor";
 import * as inv from "./Invocation";
 import { IProxyHandler, PropKey } from "./IProxyHandler";
 
-export class ProxyES6Handler<T> implements IProxyHandler<T> {
+export class ProxyES6Handler<T extends object> implements IProxyHandler<T> {
 
     constructor(private readonly _interceptor: ICallInterceptor) {
     }
 
     apply(target: T, thisArg: any, argArray?: any): any {
 
-        const funcName = common.Utils.functionName(target);
+        const funcName = functionName(target);
         const method = new inv.MethodInfo(target, funcName);
         const invocation: ICallContext = new inv.MethodInvocation(target, method, argArray, ProxyType.DYNAMIC);
         this._interceptor.intercept(invocation);

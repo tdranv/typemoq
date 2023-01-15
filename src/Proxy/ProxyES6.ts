@@ -1,11 +1,11 @@
 ﻿import * as error from "../Error/_all";
-import { Consts } from "../Consts";
+import { Constants } from "../Consts";
 import { IProxy } from "./IProxy";
 import { IProxyHandler, PropKey } from "./IProxyHandler";
 
 export class ProxyES6<T extends object> implements IProxy {
 
-    readonly ___id = Consts.IPROXY_ID_VALUE;
+    readonly ___id = Constants.IPROXY_ID_VALUE;
 
     private constructor(target: T, handler: IProxyHandler<T>) {
         const p = <ProxyES6<T>>new Proxy(target, handler);

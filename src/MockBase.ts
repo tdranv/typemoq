@@ -3,6 +3,7 @@ import * as all from "./_all";
 import { InterceptorExecute } from "./InterceptorExecute";
 import { MethodCall } from "./MethodCall";
 import { MethodCallReturn } from "./MethodCallReturn";
+import { functionName } from "./_all";
 
 export abstract class MockBase<T> implements all.IMock<T> {
 
@@ -35,11 +36,11 @@ export abstract class MockBase<T> implements all.IMock<T> {
         let result: string;
 
         if (_.isFunction(instance)) {
-            result = all.Utils.functionName(instance);
+            result = functionName(instance);
         }
         else if (_.isObject(instance)) {
             let ctor = instance.constructor;
-            result = all.Utils.functionName(ctor);
+            result = functionName(ctor);
         }
 
         if (result)

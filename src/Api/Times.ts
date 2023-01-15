@@ -35,9 +35,9 @@ export class Times {
                 undefined, `${target} argument cannot be a negative number`);
     }
 
-    static exactly(n: number): Times {
-        Times.checkArg(n, "'Times.exactly'");
-        return new Times(c => c === n, n, n, Times.NO_MATCHING_CALLS_EXACTLY_N_TIMES);
+    static exactly(times: number): Times {
+        Times.checkArg(times, "'Times.exactly'");
+        return new Times(c => c === times, times, times, Times.NO_MATCHING_CALLS_EXACTLY_N_TIMES);
     }
 
     static atLeast(n: number): Times {

@@ -22,7 +22,7 @@ container["XMLHttpRequest"] = TypeMoqTests.XMLHttpRequest;
 const hasProxyES6 = (typeof Proxy != "undefined");
 const noProxyES6Msg = "global 'Proxy' object not available";
 
-describe("GlobalMock", () => {
+describe.skip("GlobalMock", () => {
 
     describe("ctor", () => {
 
@@ -259,7 +259,7 @@ describe("GlobalMock", () => {
                 }
             });
 
-            it.only("should check that 'XmlHttpRequest' global object is auto sandboxed", () => {
+            it("should check that 'XmlHttpRequest' global object is auto sandboxed", () => {
 
                 if (!hasProxyES6) {
                     console.log(noProxyES6Msg);

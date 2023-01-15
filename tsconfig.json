@@ -27,7 +27,8 @@
         "strict": false, /* Enable all strict type-checking options. */
         "skipLibCheck": true, /* Skip type checking all .d.ts files. */
         "noUncheckedIndexedAccess": true,
-        "noEmit": true
+        "noEmit": true,
+        "plugins": [{ "transform": "typescript-rtti/dist/transformer" }]
     },
     "exclude": [
         "node_modules",

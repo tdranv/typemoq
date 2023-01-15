@@ -1,58 +1,68 @@
 ﻿import * as _ from "lodash";
-import * as CircularJSON from "circular-json";
-import { CtorWithArgs } from "./Ctor";
+import { ConstructorWithArgs } from "./Ctor";
 import { PropertyRetriever } from "./PropertyRetriever";
 import { Match } from "../Match/Match";
 
-export class Utils {
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+                return;
+            }
+            seen.add(value);
+        }
+        return value;
+    };
+};
 
-    static functionName(fun: Object): string {
-        let res: string;
-        if ((<any>fun).name) {
-            res = (<any>fun).name;
+export const functionName = <T extends object>(fun: T): string => {
+    let res: string;
+    if ((<any>fun).name !== "Function") {
+        res = (<any>fun).name;
+    } else {
+        let repr = fun.toString();
+        repr = repr.substring("function ".length);
+        res = repr.substring(0, repr.indexOf("("));
+    }
+    return res;
+}
+
+export const objectName = <T extends object>(obj: T): string => functionName(obj.constructor);
+
+export const argsName = (args: IArguments): string => {
+    let argsArray: any[] = Array.prototype.slice.call(args);
+    let sargs = argsArray.map((x: any) => {
+        let res = "";
+        if (Match.isMatcher(x)) {
+            res = x.toString();
         } else {
-            let repr = fun.toString();
-            repr = repr.substr("function ".length);
-            res = repr.substr(0, repr.indexOf("("));
+            const replacer = (key: string, value: any) => {
+                if (value === undefined) return "undefined";
+                if (_.isFunction(value)) return "Function";
+                return value;
+            };
+            res = JSON.stringify(x, getCircularReplacer());
         }
         return res;
-    }
+    });
+    let res = _.join(sargs);
+    return res;
+}
 
-    static objectName(obj: Object): string {
-        let res = Utils.functionName(obj.constructor);
-        return res;
-    }
 
-    static argsName(args: IArguments): string {
-        let argsArray: any[] = Array.prototype.slice.call(args);
-        let sargs = argsArray.map((x: any) => {
-            let res = "";
-            if (Match.isMatcher(x)) {
-                res = x.toString();
-            }
-            else {
-                const replacer = (key: string, value: any) => {
-                    if (value === undefined)
-                        return "undefined";
-                    if (_.isFunction(value))
-                        return "Function";
-                    return value;
-                };
-                res = CircularJSON.stringify(x, replacer);
-            }
-            return res;
-        });
-        let res = _.join(sargs);
-        return res;
-    }
+export class Utils {
 
-    static conthunktor<U>(ctor: CtorWithArgs<U>, args: any[]): U {
+    static conthunktor<U>(ctor: ConstructorWithArgs<U>, args: any[]): U {
         let ret: U = new ctor(...args);
         return ret;
     }
 
     static clone(target: Object, source: Object) {
-        let sourceProps = PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(source);
+        let sourceProps =
+            PropertyRetriever.getOwnAndPrototypeEnumerablesAndNonenumerables(
+                source
+            );
         for (let p of sourceProps)
             Object.defineProperty(target, p.name, p.desc);
     }

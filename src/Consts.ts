@@ -1,5 +1,5 @@
-﻿export class Consts {
-    static readonly IMATCH_ID_VALUE = "438A51D3-6864-49D7-A655-CA1153B86965";
+﻿export class Constants {
+    static readonly MATCH_VALUE_ID = "438A51D3-6864-49D7-A655-CA1153B86965";
     static readonly IMATCH_ID_NAME = "___id";
     static readonly IMATCH_MATCHES_NAME = "___matches";
 

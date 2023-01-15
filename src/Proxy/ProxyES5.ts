@@ -1,15 +1,16 @@
 ﻿import * as _ from "lodash";
 import * as common from "../Common/_all";
 import * as error from "../Error/_all";
-import { Consts } from "../Consts";
+import { Constants } from "../Consts";
 import { IProxy } from "./IProxy";
 import { ICallContext } from "./ICallContext";
 import { ICallInterceptor } from "./ICallInterceptor";
 import { PropertyInfo, MethodInfo, MethodInvocation, MethodGetterInvocation, MethodSetterInvocation, ValueGetterInvocation, ValueSetterInvocation } from "./Invocation";
+import { functionName } from "../Common/_all";
 
 export class ProxyES5<T> implements IProxy {
 
-    readonly ___id = Consts.IPROXY_ID_VALUE;
+    readonly ___id = Constants.IPROXY_ID_VALUE;
 
     private constructor(target: T, interceptor: ICallInterceptor) {
         this.check(target);
@@ -48,7 +49,7 @@ export class ProxyES5<T> implements IProxy {
         let result: any;
 
         if (_.isFunction(target)) {
-            let funcName = common.Utils.functionName(target);
+            let funcName = functionName(target);
             result = ProxyES5.methodProxyValue(undefined, interceptor, target, funcName, null);
         }
         else {
@@ -60,7 +61,7 @@ export class ProxyES5<T> implements IProxy {
 
     static isProxy(obj: any): boolean {
         if (!_.isNil(obj) &&
-            !_.isUndefined(obj[Consts.IPROXY_ID_NAME]) && obj[Consts.IPROXY_ID_NAME] === Consts.IPROXY_ID_VALUE)
+            !_.isUndefined(obj[Constants.IPROXY_ID_NAME]) && obj[Constants.IPROXY_ID_NAME] === Constants.IPROXY_ID_VALUE)
             return true;
         else
             return false;

@@ -1,10 +1,10 @@
 ﻿import * as common from "../Common/_all";
 import { IMatch } from "./IMatch";
-import { Consts } from "../Consts";
+import { Constants } from "../Consts";
 
 export class MatchPred<T> implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     constructor(private readonly _pred: common.IFunc2<T, boolean>) {
     }

@@ -47,7 +47,6 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            './node_modules/circular-json/build/circular-json.js',
             './node_modules/lodash/lodash.js',
             './.tmp/src/typemoq.js',
             './.tmp/test/Mock.test.js',

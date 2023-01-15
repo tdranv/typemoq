@@ -1,28 +1,25 @@
-﻿import * as _ from "lodash";
+﻿import isEqual from "lodash/isEqual";
+import cloneDeep from "lodash/cloneDeep";
 import { IMatch } from "./IMatch";
-import { Consts } from "../Consts";
-import { Utils } from "../Common/Utils";
+import { Constants as Constants } from "../Consts";
+import { argsName } from "../Common/Utils";
 
-export class MatchValue<T> implements IMatch {
+export class MatchValue<T = IArguments> implements IMatch {
 
-    readonly ___id = Consts.IMATCH_ID_VALUE;
+    readonly ___id = Constants.MATCH_VALUE_ID;
 
     private readonly _value: T;
 
     constructor(value: T) {
-        this._value = <any>_.cloneDeep(value);
+        this._value = cloneDeep(value);
     }
 
     ___matches(object: any): boolean {
-        let match = false;
-        if (_.isEqual(this._value, object))
-            match = true;
-        return match;
+        return isEqual(this._value, object);
     }
 
     toString(): string {
-        let valueName = Utils.argsName(<any>[this._value]);
-        let res = `It.isValue(${valueName})`;
-        return res;
+        let valueName = argsName(<any>[this._value]);
+        return valueName;
     }
 }

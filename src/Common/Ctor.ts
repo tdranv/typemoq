@@ -3,7 +3,7 @@
     prototype: Object;
 }
 
-export type CtorWithArgs<T> = {
-    new (...ctorArgs: any[]): T;
+export type ConstructorWithArgs<T> = {
+    new (...constructorArgs: any[]): T;
     prototype: Object;
 }

@@ -7,7 +7,6 @@ specifiers:
   '@types/lodash': 4.14.189
   '@types/mocha': 10.0.0
   '@types/node': 18.11.9
-  circular-json: 0.3.1
   del: 7.0.0
   dts-bundle: 0.7.3
   jest: ^29.3.1
@@ -20,7 +19,6 @@ specifiers:
   typescript: 4.9.3
 
 dependencies:
-  circular-json: 0.3.1
   jest: 29.3.1_@types+node@18.11.9
   lodash: 4.17.21
   tsup: 6.5.0_typescript@4.9.3
@@ -1351,11 +1349,6 @@ packages:
   /ci-info/3.7.1:
     resolution: {integrity: sha512-4jYS4MOAaCIStSRwiuxc4B8MYhIe676yO1sYGzARnjXkWpmzZMMYxY6zu8WYWDhSuth5zhrQ1rhNSibyyvv4/w==}
     engines: {node: '>=8'}
-
-  /circular-json/0.3.1:
-    resolution: {integrity: sha512-MTc6ffiOuzmPfRWVHjRscjzTQSYq16oouOebk6iHn/Tvp1mKBwQ/x33Trh7oZwI0e7wZyMV9KzDBWalzxjoIGQ==}
-    deprecated: CircularJSON is in maintenance only, flatted is its successor.
-    dev: false
 
   /cjs-module-lexer/1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
